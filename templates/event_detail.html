@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} — KUHIN Events{% endblock %}
+{% block meta_description %}{{ event.description|striptags|truncatewords:30 }}{% endblock %}
+{% block og_title %}{{ event.title }} — KUHIN{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="page-hero has-photo" aria-labelledby="event-title">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-9">
+        <!-- Breadcrumb -->
+        <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;">
+          <ol style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+            <li style="font-size:0.82rem;color:rgba(255,255,255,0.55);">
+              <a href="/" style="color:rgba(255,255,255,0.65);text-decoration:none;">Home</a>
+              <span style="margin-left:0.5rem;opacity:0.4;">/</span>
+            </li>
+            <li style="font-size:0.82rem;color:rgba(255,255,255,0.55);">
+              <a href="{% url 'home:events' %}" style="color:rgba(255,255,255,0.65);text-decoration:none;">Events</a>
+              <span style="margin-left:0.5rem;opacity:0.4;">/</span>
+            </li>
+            <li style="font-size:0.82rem;color:rgba(255,255,255,0.75);" aria-current="page">{{ event.title|truncatechars:40 }}</li>
+          </ol>
+        </nav>
+
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <span class="ku-tag" style="background:rgba(200,151,58,0.2);color:#E8C76A;font-size:0.72rem;">{{ event.event_type }}</span>
+          <span class="ku-tag" style="font-size:0.72rem;
+            {% if event.status == 'upcoming' %}background:rgba(14,143,122,0.2);color:#4ECDC4;
+            {% elif event.status == 'ongoing' %}background:rgba(74,144,217,0.2);color:#7EC8F0;
+            {% else %}background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);{% endif %}">
+            {{ event.status|title }}
+          </span>
+        </div>
+
+        <h1 id="event-title" class="hero-headline">{{ event.title }}</h1>
+
+        <!-- Key details row -->
+        <div class="d-flex flex-wrap gap-4 mt-4" style="color:rgba(255,255,255,0.75);font-size:0.9rem;">
+          <span><i class="fas fa-calendar me-2" style="color:var(--ku-gold);" aria-hidden="true"></i>{{ event.date|date:"F j, Y" }}</span>
+          {% if event.start_time %}<span><i class="fas fa-clock me-2" style="color:var(--ku-gold);" aria-hidden="true"></i>{{ event.start_time|time:"H:i" }}{% if event.end_time %} – {{ event.end_time|time:"H:i" }}{% endif %}</span>{% endif %}
+          <span><i class="fas fa-map-marker-alt me-2" style="color:var(--ku-gold);" aria-hidden="true"></i>{{ event.location }}</span>
+          {% if event.max_participants %}<span><i class="fas fa-users me-2" style="color:var(--ku-gold);" aria-hidden="true"></i>{{ event.max_participants }} seats</span>{% endif %}
+        </div>
+
+        {% if event.registration_link and event.status == 'upcoming' %}
+          <div class="mt-5 d-flex gap-3 flex-wrap">
+            <a href="{{ event.registration_link }}" target="_blank" rel="noopener noreferrer"
+               class="btn-ku btn-gold-ku" style="text-decoration:none;">
+              <i class="fas fa-ticket-alt me-2" aria-hidden="true"></i> Register Now
+            </a>
+            <a href="{% url 'home:events' %}" class="btn-ku btn-outline-ku" style="text-decoration:none;">
+              <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> All Events
+            </a>
+          </div>
+        {% else %}
+          <div class="mt-5">
+            <a href="{% url 'home:events' %}" class="btn-ku btn-outline-ku" style="text-decoration:none;">
+              <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> All Events
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="main-content">
+  <div class="section-white section-pad">
+    <div class="container">
+      <div class="row g-5">
+
+        <!-- MAIN CONTENT -->
+        <div class="col-lg-8">
+
+          <!-- Banner image -->
+          {% if event.banner %}
+            <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2.5rem;box-shadow:var(--shadow-md);">
+              <img src="{{ event.banner.url }}" alt="{{ event.title }} banner" style="width:100%;display:block;" loading="eager">
+            </div>
+          {% elif event.image %}
+            <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2.5rem;box-shadow:var(--shadow-md);">
+              <img src="{{ event.image.url }}" alt="{{ event.title }}" style="width:100%;display:block;" loading="eager">
+            </div>
+          {% endif %}
+
+          <!-- Description -->
+          <div class="ku-card p-5 mb-4" style="border-top:3px solid var(--color-primary);">
+            <h2 style="font-size:1.3rem;margin-bottom:1.25rem;">About This Event</h2>
+            <div class="rich-content" style="color:var(--ku-gray-700);line-height:1.8;font-size:0.95rem;">
+              {{ event.description|safe }}
+            </div>
+          </div>
+
+          <!-- Speakers -->
+          {% if event.speakers %}
+            <div class="ku-card p-5 mb-4">
+              <h3 style="font-size:1.1rem;margin-bottom:1rem;"><i class="fas fa-microphone me-2" style="color:var(--color-primary);" aria-hidden="true"></i>Speakers</h3>
+              <p style="color:var(--ku-gray-700);margin:0;">{{ event.speakers }}</p>
+            </div>
+          {% endif %}
+
+          <!-- Prerequisites -->
+          {% if event.prerequisites %}
+            <div class="ku-card p-5 mb-4">
+              <h3 style="font-size:1.1rem;margin-bottom:1rem;"><i class="fas fa-clipboard-list me-2" style="color:var(--color-primary);" aria-hidden="true"></i>Prerequisites</h3>
+              <div style="color:var(--ku-gray-700);line-height:1.7;font-size:0.92rem;">{{ event.prerequisites|safe }}</div>
+            </div>
+          {% endif %}
+
+          <!-- What you'll learn -->
+          {% if event.outcome %}
+            <div class="ku-card p-5 mb-4" style="border-top:3px solid var(--ku-teal);">
+              <h3 style="font-size:1.1rem;margin-bottom:1rem;"><i class="fas fa-graduation-cap me-2" style="color:var(--ku-teal);" aria-hidden="true"></i>What You'll Learn</h3>
+              <div style="color:var(--ku-gray-700);line-height:1.7;font-size:0.92rem;">{{ event.outcome|safe }}</div>
+            </div>
+          {% endif %}
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+
+          <!-- Event details card -->
+          <div class="ku-card p-5 mb-4" style="position:sticky;top:100px;">
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:1.25rem;">Event Details</h3>
+            <dl style="margin:0;">
+              <div style="display:flex;gap:0.75rem;margin-bottom:1rem;align-items:flex-start;">
+                <dt style="width:20px;flex-shrink:0;color:var(--ku-gold);margin-top:1px;"><i class="fas fa-calendar" aria-hidden="true"></i></dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">{{ event.date|date:"l, F j, Y" }}</dd>
+              </div>
+              {% if event.start_time %}
+              <div style="display:flex;gap:0.75rem;margin-bottom:1rem;align-items:flex-start;">
+                <dt style="width:20px;flex-shrink:0;color:var(--ku-gold);margin-top:1px;"><i class="fas fa-clock" aria-hidden="true"></i></dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">{{ event.start_time|time:"H:i" }}{% if event.end_time %} – {{ event.end_time|time:"H:i" }}{% endif %}</dd>
+              </div>
+              {% endif %}
+              <div style="display:flex;gap:0.75rem;margin-bottom:1rem;align-items:flex-start;">
+                <dt style="width:20px;flex-shrink:0;color:var(--ku-gold);margin-top:1px;"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">
+                  {{ event.location }}
+                  {% if event.venue_link %}
+                    <br><a href="{{ event.venue_link }}" target="_blank" rel="noopener" style="font-size:0.8rem;color:var(--color-primary);">View on Map <i class="fas fa-external-link-alt ms-1" aria-hidden="true"></i></a>
+                  {% endif %}
+                </dd>
+              </div>
+              {% if event.max_participants %}
+              <div style="display:flex;gap:0.75rem;margin-bottom:1rem;align-items:flex-start;">
+                <dt style="width:20px;flex-shrink:0;color:var(--ku-gold);margin-top:1px;"><i class="fas fa-users" aria-hidden="true"></i></dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">{{ event.max_participants }} participants max</dd>
+              </div>
+              {% endif %}
+              {% if event.registration_deadline %}
+              <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem;align-items:flex-start;">
+                <dt style="width:20px;flex-shrink:0;color:var(--ku-gold);margin-top:1px;"><i class="fas fa-hourglass-half" aria-hidden="true"></i></dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">Deadline: {{ event.registration_deadline|date:"M j, Y" }}</dd>
+              </div>
+              {% endif %}
+            </dl>
+            {% if event.registration_link and event.status == 'upcoming' %}
+              <a href="{{ event.registration_link }}" target="_blank" rel="noopener noreferrer"
+                 class="btn-ku btn-primary-ku" style="width:100%;text-decoration:none;justify-content:center;margin-top:0.5rem;">
+                <i class="fas fa-ticket-alt me-2" aria-hidden="true"></i> Register
+              </a>
+            {% endif %}
+          </div>
+
+          <!-- Related events -->
+          {% if related_events %}
+            <div>
+              <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:1rem;">Upcoming Events</h3>
+              <div class="d-flex flex-column gap-3">
+                {% for ev in related_events %}
+                  <a href="{% url 'home:event_detail' ev.slug %}" style="text-decoration:none;">
+                    <div class="ku-card p-4" style="cursor:pointer;">
+                      <div style="display:flex;gap:1rem;align-items:center;">
+                        <div style="background:var(--grad-hero);color:#fff;border-radius:var(--radius-sm);padding:0.5rem 0.75rem;text-align:center;min-width:48px;flex-shrink:0;">
+                          <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;opacity:0.8;">{{ ev.date|date:"M" }}</div>
+                          <div style="font-size:1.2rem;font-weight:800;line-height:1;">{{ ev.date|date:"d" }}</div>
+                        </div>
+                        <div>
+                          <p style="font-size:0.85rem;font-weight:600;color:var(--ku-gray-900);margin:0 0 2px;">{{ ev.title|truncatechars:45 }}</p>
+                          <p style="font-size:0.75rem;color:var(--color-muted);margin:0;">{{ ev.location }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .rich-content h1,.rich-content h2,.rich-content h3{font-family:var(--font-head);color:var(--ku-navy);margin-top:1.5rem;margin-bottom:0.75rem;}
+  .rich-content p{margin-bottom:1rem;line-height:1.8;}
+  .rich-content ul,.rich-content ol{padding-left:1.5rem;margin-bottom:1rem;}
+  .rich-content li{margin-bottom:0.4rem;}
+  .rich-content a{color:var(--color-primary);}
+</style>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.title }} — KUHIN News{% endblock %}
+{% block meta_description %}{{ news.description|striptags|truncatewords:30 }}{% endblock %}
+{% block og_title %}{{ news.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .news-body { font-size:1.02rem;line-height:1.85;color:var(--ku-gray-700); }
+  .news-body h2 { font-family:var(--font-head);font-size:1.5rem;margin:2rem 0 0.75rem;color:var(--ku-navy);font-weight:700; }
+  .news-body h3 { font-family:var(--font-head);font-size:1.2rem;margin:1.75rem 0 0.5rem;color:var(--ku-navy);font-weight:700; }
+  .news-body p  { margin-bottom:1.15rem; }
+  .news-body ul,.news-body ol { padding-left:1.5rem;margin-bottom:1rem; }
+  .news-body li { margin-bottom:0.4rem; }
+  .news-body a  { color:var(--color-primary);text-decoration:underline;text-underline-offset:3px; }
+  .news-body blockquote { border-left:4px solid var(--ku-teal);margin:1.5rem 0;padding:0.85rem 1.25rem;background:#EBF7F3;border-radius:0 var(--radius-md) var(--radius-md) 0;color:var(--ku-gray-600);font-style:italic; }
+  .news-body img { border-radius:var(--radius-md);box-shadow:var(--shadow-md);margin:1.25rem 0;max-width:100%; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="news-title">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;">
+      <ol style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+        <li style="font-size:0.82rem;"><a href="/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Home</a><span style="margin-left:0.5rem;opacity:0.4;">/</span></li>
+        <li style="font-size:0.82rem;"><a href="{% url 'newsletter:news_list' %}" style="color:rgba(255,255,255,0.6);text-decoration:none;">News</a><span style="margin-left:0.5rem;opacity:0.4;">/</span></li>
+        <li style="font-size:0.82rem;color:rgba(255,255,255,0.8);" aria-current="page">{{ news.title|truncatechars:40 }}</li>
+      </ol>
+    </nav>
+    <div class="row">
+      <div class="col-lg-9">
+        <span class="ku-tag" style="background:rgba(200,151,58,0.2);color:#E8C76A;margin-bottom:1.25rem;display:inline-block;">
+          <i class="fas fa-bullhorn me-1" aria-hidden="true"></i> Announcement
+        </span>
+        <h1 id="news-title" class="hero-headline" style="font-size:clamp(1.8rem,4vw,3rem);">{{ news.title }}</h1>
+        <p style="color:rgba(255,255,255,0.6);font-size:0.88rem;margin-top:1rem;">
+          <i class="fas fa-calendar me-1" aria-hidden="true"></i>
+          <time datetime="{{ news.created_at|date:'Y-m-d' }}">{{ news.created_at|date:"F j, Y" }}</time>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+    <div class="row g-5">
+
+      <!-- Article -->
+      <div class="col-lg-8 reveal">
+        <article class="ku-card p-5" style="border-top:3px solid var(--ku-teal);">
+          <div class="news-body">
+            {{ news.description|safe }}
+          </div>
+        </article>
+
+        <!-- Navigation -->
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+          <a href="{% url 'newsletter:news_list' %}" class="btn-ku btn-outline-dark-ku" style="text-decoration:none;">
+            <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> All News
+          </a>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4 reveal reveal-delay-1">
+        <div style="position:sticky;top:100px;">
+
+          <!-- Published info -->
+          <div class="ku-card p-5 mb-4">
+            <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:1.25rem;">Details</h3>
+            <dl>
+              <div style="display:flex;flex-direction:column;margin-bottom:0.85rem;">
+                <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.2rem;">Published</dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">{{ news.created_at|date:"F j, Y" }}</dd>
+              </div>
+              <div style="display:flex;flex-direction:column;">
+                <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.2rem;">Status</dt>
+                <dd style="margin:0;">
+                  <span class="ku-tag {% if news.is_active %}ku-tag-teal{% else %}ku-tag-gray{% endif %}">
+                    {% if news.is_active %}Active{% else %}Archived{% endif %}
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Related news -->
+          {% if related_news %}
+            <div class="ku-card p-5">
+              <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:1.25rem;">Latest News</h3>
+              <div class="d-flex flex-column gap-3">
+                {% for item in related_news %}
+                  <a href="{% url 'newsletter:news_detail' item.slug %}" style="text-decoration:none;display:block;">
+                    <div style="display:flex;gap:0.75rem;align-items:flex-start;padding:0.75rem;border-radius:var(--radius-sm);transition:background 0.15s;" onmouseover="this.style.background='var(--ku-gray-50)'" onmouseout="this.style.background='transparent'">
+                      <div style="background:var(--grad-hero);color:#fff;border-radius:var(--radius-sm);padding:0.35rem 0.6rem;text-align:center;min-width:44px;flex-shrink:0;">
+                        <div style="font-size:0.55rem;text-transform:uppercase;opacity:0.75;">{{ item.created_at|date:"M" }}</div>
+                        <div style="font-family:var(--font-head);font-size:1.1rem;font-weight:800;line-height:1;">{{ item.created_at|date:"d" }}</div>
+                      </div>
+                      <p style="font-size:0.84rem;font-weight:600;color:var(--ku-gray-800);margin:0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ item.title }}</p>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

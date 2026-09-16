@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Page Not Found — KUHIN{% endblock %}
+{% block content %}
+<section class="page-hero" style="min-height:100svh;display:flex;align-items:center;" aria-labelledby="err-heading">
+  <div class="container" style="position:relative;z-index:2;text-align:center;">
+    <div style="font-family:var(--font-head);font-size:8rem;font-weight:800;color:rgba(255,255,255,0.08);line-height:1;margin-bottom:-2rem;" aria-hidden="true">404</div>
+    <h1 id="err-heading" class="hero-headline" style="font-size:clamp(2rem,4vw,3rem);">Page Not Found</h1>
+    <p class="hero-body" style="max-width:480px;margin:1.25rem auto 2.5rem;">
+      The page you're looking for doesn't exist or may have moved. Let's get you back on track.
+    </p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="/" class="btn-ku btn-gold-ku" style="text-decoration:none;"><i class="fas fa-home me-2"></i>Go Home</a>
+      <a href="{% url 'home:events' %}" class="btn-ku btn-outline-ku" style="text-decoration:none;">Browse Events</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

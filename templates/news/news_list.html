@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}News & Updates — KUHIN{% endblock %}
+{% block meta_description %}Latest announcements, press releases, and developments from the KUHIN health informatics community at Kathmandu University.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="news-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <span class="hero-label"><i class="fas fa-bullhorn me-2"></i>Announcements</span>
+        <h1 id="news-heading" class="hero-headline mt-3">News & Updates</h1>
+        <p class="hero-subtitle mt-4">
+          Stay current with the latest announcements, activities, and developments from the KUHIN community.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+
+    {% if news_updates %}
+      <div class="row g-4">
+        {% for news in news_updates %}
+          <div class="col-lg-6 reveal">
+            <article class="ku-card h-100 p-0 overflow-hidden">
+              <!-- Header strip with date -->
+              <div style="background:var(--grad-hero);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;">
+                <div style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:0.5rem 1rem;text-align:center;min-width:60px;flex-shrink:0;">
+                  <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.65);">{{ news.created_at|date:"M" }}</div>
+                  <div style="font-family:var(--font-head);font-size:1.6rem;font-weight:800;color:#fff;line-height:1;">{{ news.created_at|date:"d" }}</div>
+                  <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);">{{ news.created_at|date:"Y" }}</div>
+                </div>
+                <div>
+                  <span class="ku-tag" style="background:rgba(200,151,58,0.25);color:#E8C76A;font-size:0.65rem;margin-bottom:0.35rem;display:inline-block;">Announcement</span>
+                  <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin:0;">
+                    <i class="fas fa-clock me-1" aria-hidden="true"></i>{{ news.created_at|timesince }} ago
+                  </p>
+                </div>
+              </div>
+              <!-- Body -->
+              <div style="padding:1.5rem;display:flex;flex-direction:column;flex:1;">
+                <h3 style="font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--ku-gray-900);margin-bottom:0.75rem;line-height:1.4;">
+                  <a href="{% url 'newsletter:news_detail' news.slug %}" style="color:inherit;text-decoration:none;">{{ news.title }}</a>
+                </h3>
+                <div style="font-size:0.88rem;color:var(--color-muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:1.25rem;">
+                  {{ news.description|striptags|truncatewords:30 }}
+                </div>
+                <a href="{% url 'newsletter:news_detail' news.slug %}" class="card-footer-link" style="margin-top:auto;" aria-label="Read: {{ news.title }}">
+                  Read More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state reveal">
+        <div class="empty-icon"><i class="fas fa-bullhorn" aria-hidden="true"></i></div>
+        <h5>No Announcements Yet</h5>
+        <p>News and updates from the KUHIN community will appear here.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

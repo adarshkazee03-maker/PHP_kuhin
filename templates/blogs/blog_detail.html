@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static blog_filters %}
+
+{% block title %}{{ blog.title }} — KUHIN Blog{% endblock %}
+{% block meta_description %}{{ blog.excerpt|truncatewords:30 }}{% endblock %}
+{% block og_title %}{{ blog.title }}{% endblock %}
+{% block og_description %}{{ blog.excerpt }}{% endblock %}
+{% block og_image %}{% if blog.featured_image %}{{ blog.featured_image.url }}{% endif %}{% endblock %}
+
+{% block extra_css %}
+<style>
+  #readingBar { position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--ku-cobalt),var(--ku-gold));z-index:2000;transition:width 0.1s linear; }
+  .article-body { font-size:1.05rem;line-height:1.85;color:var(--ku-gray-700); }
+  .article-body h2 { font-family:var(--font-head);font-size:1.6rem;margin:2.5rem 0 1rem;color:var(--ku-navy);font-weight:700; }
+  .article-body h3 { font-family:var(--font-head);font-size:1.25rem;margin:2rem 0 0.75rem;color:var(--ku-navy);font-weight:700; }
+  .article-body p  { margin-bottom:1.25rem; }
+  .article-body ul,.article-body ol { padding-left:1.75rem;margin-bottom:1.25rem; }
+  .article-body li { margin-bottom:0.5rem; }
+  .article-body blockquote { border-left:4px solid var(--ku-gold);margin:2rem 0;padding:1rem 1.5rem;background:var(--ku-gray-50);border-radius:0 var(--radius-md) var(--radius-md) 0;font-style:italic;color:var(--ku-gray-600); }
+  .article-body a { color:var(--color-primary);text-decoration:underline;text-underline-offset:3px; }
+  .article-body img { border-radius:var(--radius-md);box-shadow:var(--shadow-md);margin:1.5rem 0;max-width:100%; }
+  .article-body code { font-family:var(--font-mono);font-size:0.88em;background:var(--ku-gray-100);padding:2px 6px;border-radius:4px; }
+  .article-body pre { background:var(--ku-gray-900);color:#e2e8f0;padding:1.5rem;border-radius:var(--radius-md);overflow-x:auto;margin:1.5rem 0; }
+  .article-body pre code { background:none;padding:0;color:inherit; }
+  .toc a { color:var(--ku-gray-600);text-decoration:none;font-size:0.88rem;line-height:1.6;display:block;padding:0.2rem 0;border-left:2px solid transparent;padding-left:0.75rem;transition:all 0.15s; }
+  .toc a:hover,.toc a.active { color:var(--color-primary);border-left-color:var(--color-primary); }
+  @media(max-width:991px){.sidebar-sticky{position:static!important;}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="readingBar" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- HERO -->
+<section class="page-hero has-photo" aria-labelledby="blog-post-title" style="padding-bottom:0;">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;padding-bottom:3rem;">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;">
+      <ol style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+        <li style="font-size:0.82rem;"><a href="/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Home</a><span style="margin-left:0.5rem;opacity:0.4;">/</span></li>
+        <li style="font-size:0.82rem;"><a href="{% url 'blog:blog_list' %}" style="color:rgba(255,255,255,0.6);text-decoration:none;">Blog</a><span style="margin-left:0.5rem;opacity:0.4;">/</span></li>
+        {% if blog.category %}<li style="font-size:0.82rem;"><a href="{% url 'blog:blog_list' %}?category={{ blog.category.slug }}" style="color:rgba(255,255,255,0.6);text-decoration:none;">{{ blog.category.name }}</a><span style="margin-left:0.5rem;opacity:0.4;">/</span></li>{% endif %}
+        <li style="font-size:0.82rem;color:rgba(255,255,255,0.8);" aria-current="page">{{ blog.title|truncatechars:40 }}</li>
+      </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-9 text-center">
+        {% if blog.category %}
+          <span class="ku-tag" style="background:rgba(200,151,58,0.2);color:#E8C76A;margin-bottom:1.25rem;display:inline-block;">
+            {{ blog.category.name }}
+          </span>
+        {% endif %}
+        <h1 id="blog-post-title" class="hero-headline" style="font-size:clamp(1.9rem,4.5vw,3.2rem);">{{ blog.title }}</h1>
+
+        <!-- Author / meta row -->
+        <div class="d-flex align-items-center justify-content-center flex-wrap gap-4 mt-4" style="color:rgba(255,255,255,0.6);font-size:0.88rem;">
+          <span style="display:flex;align-items:center;gap:0.5rem;">
+            <span style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;color:#fff;">
+              {{ blog.author.first_name|first|default:blog.author.username|first|upper }}
+            </span>
+            {{ blog.author.get_full_name|default:blog.author.username }}
+          </span>
+          <span><i class="fas fa-calendar me-1" aria-hidden="true"></i><time datetime="{{ blog.published_date|date:'Y-m-d' }}">{{ blog.published_date|date:"F j, Y" }}</time></span>
+          <span><i class="fas fa-eye me-1" aria-hidden="true"></i>{{ blog.views }} views</span>
+          {% if blog.tags %}<span><i class="fas fa-tag me-1" aria-hidden="true"></i>{{ blog.tags }}</span>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero image strip -->
+  {% if blog.featured_image %}
+    <div style="max-height:460px;overflow:hidden;position:relative;">
+      <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" style="width:100%;object-fit:cover;display:block;" loading="eager">
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(11,31,69,0.3),rgba(11,31,69,0));pointer-events:none;"></div>
+    </div>
+  {% endif %}
+</section>
+
+<!-- ARTICLE BODY -->
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+    <div class="row g-5">
+
+      <!-- Article -->
+      <div class="col-lg-8 reveal">
+        <article class="ku-card p-5" style="border-top:3px solid var(--color-primary);">
+          <div class="article-body">
+            {{ blog.content|safe }}
+          </div>
+
+          <!-- Tags -->
+          {% if blog.tags %}
+            <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--color-border);">
+              <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:0.75rem;">Tags</p>
+              <div class="d-flex flex-wrap gap-2">
+                {% for tag in blog.tags|split_csv %}
+                  <span class="ku-tag ku-tag-blue" style="text-transform:none;">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Author card -->
+          <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--color-border);display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:52px;height:52px;border-radius:50%;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.2rem;font-weight:800;color:#fff;flex-shrink:0;">
+              {{ blog.author.first_name|first|default:blog.author.username|first|upper }}
+            </div>
+            <div>
+              <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:0.25rem;">Written by</p>
+              <p style="font-weight:700;color:var(--ku-gray-900);margin-bottom:0.25rem;">{{ blog.author.get_full_name|default:blog.author.username }}</p>
+              <p style="font-size:0.82rem;color:var(--color-muted);margin:0;">KUHIN contributor</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Share -->
+        <div class="ku-card p-4 mt-4" style="display:flex;align-items:center;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
+          <p style="font-weight:600;margin:0;font-size:0.9rem;">Share this article</p>
+          <div class="d-flex gap-2">
+            <a href="https://twitter.com/intent/tweet?text={{ blog.title|urlencode }}&url={{ request.build_absolute_uri }}"
+               target="_blank" rel="noopener" class="btn-ku btn-outline-dark-ku" style="font-size:0.8rem;padding:0.4rem 1rem;text-decoration:none;" aria-label="Share on Twitter">
+              <i class="fab fa-twitter me-1" aria-hidden="true"></i> Twitter
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
+               target="_blank" rel="noopener" class="btn-ku btn-outline-dark-ku" style="font-size:0.8rem;padding:0.4rem 1rem;text-decoration:none;" aria-label="Share on LinkedIn">
+              <i class="fab fa-linkedin-in me-1" aria-hidden="true"></i> LinkedIn
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}"
+               target="_blank" rel="noopener" class="btn-ku btn-outline-dark-ku" style="font-size:0.8rem;padding:0.4rem 1rem;text-decoration:none;" aria-label="Share on Facebook">
+              <i class="fab fa-facebook-f me-1" aria-hidden="true"></i> Facebook
+            </a>
+          </div>
+        </div>
+
+        <!-- Related posts -->
+        {% if related_blogs %}
+          <div style="margin-top:3rem;">
+            <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;">Related Articles</h3>
+            <div class="row g-4">
+              {% for related in related_blogs %}
+                <div class="col-md-4">
+                  <article class="blog-card h-100">
+                    <div class="card-thumb" style="height:160px;">
+                      {% if related.featured_image %}
+                        <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy">
+                      {% else %}
+                        <div style="width:100%;height:100%;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;"><i class="fas fa-newspaper fa-2x" style="color:rgba(255,255,255,0.2);" aria-hidden="true"></i></div>
+                      {% endif %}
+                    </div>
+                    <div class="card-body">
+                      <p class="card-meta"><span>{{ related.published_date|date:"M d, Y" }}</span></p>
+                      <h4 class="card-title" style="font-size:0.92rem;">
+                        <a href="{% url 'blog:blog_detail' related.slug %}" style="color:inherit;text-decoration:none;">{{ related.title }}</a>
+                      </h4>
+                      <a href="{% url 'blog:blog_detail' related.slug %}" class="card-footer-link" style="font-size:0.8rem;" aria-label="Read: {{ related.title }}">
+                        Read <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </article>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4 reveal reveal-delay-1">
+        <div class="sidebar-sticky" style="position:sticky;top:100px;">
+
+          <!-- Categories -->
+          {% if categories %}
+            <div class="ku-card p-5 mb-4">
+              <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:1.25rem;">Categories</h3>
+              <div class="d-flex flex-column gap-2">
+                <a href="{% url 'blog:blog_list' %}" class="btn-ku btn-outline-dark-ku" style="font-size:0.82rem;padding:0.4rem 0.9rem;text-decoration:none;justify-content:flex-start;">
+                  All Posts
+                </a>
+                {% for cat in categories %}
+                  <a href="{% url 'blog:blog_list' %}?category={{ cat.slug }}"
+                     class="btn-ku {% if blog.category.slug == cat.slug %}btn-primary-ku{% else %}btn-outline-dark-ku{% endif %}"
+                     style="font-size:0.82rem;padding:0.4rem 0.9rem;text-decoration:none;justify-content:flex-start;">
+                    {{ cat.name }}
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- Article info -->
+          <div class="ku-card p-5 mb-4">
+            <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:1.25rem;">Article Info</h3>
+            <dl>
+              <div style="display:flex;flex-direction:column;margin-bottom:0.85rem;">
+                <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.2rem;">Published</dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);"><time datetime="{{ blog.published_date|date:'Y-m-d' }}">{{ blog.published_date|date:"F j, Y" }}</time></dd>
+              </div>
+              {% if blog.updated_at != blog.created_at %}
+                <div style="display:flex;flex-direction:column;margin-bottom:0.85rem;">
+                  <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.2rem;">Updated</dt>
+                  <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);"><time datetime="{{ blog.updated_at|date:'Y-m-d' }}">{{ blog.updated_at|date:"F j, Y" }}</time></dd>
+                </div>
+              {% endif %}
+              <div style="display:flex;flex-direction:column;margin-bottom:0.85rem;">
+                <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.2rem;">Author</dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">{{ blog.author.get_full_name|default:blog.author.username }}</dd>
+              </div>
+              <div style="display:flex;flex-direction:column;">
+                <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.2rem;">Views</dt>
+                <dd style="margin:0;font-size:0.88rem;color:var(--ku-gray-700);">{{ blog.views }}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <a href="{% url 'blog:blog_list' %}" class="btn-ku btn-outline-dark-ku" style="width:100%;justify-content:center;text-decoration:none;">
+            <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> All Articles
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function(){
+  // Reading progress bar
+  const bar = document.getElementById('readingBar');
+  const article = document.querySelector('.article-body');
+  if (bar && article) {
+    window.addEventListener('scroll', function() {
+      const rect = article.getBoundingClientRect();
+      const total = article.offsetHeight - window.innerHeight;
+      const scrolled = -rect.top;
+      const pct = Math.max(0, Math.min(100, (scrolled / total) * 100));
+      bar.style.width = pct + '%';
+      bar.setAttribute('aria-valuenow', Math.round(pct));
+    }, { passive: true });
+  }
+})();
+</script>
+{% endblock %}

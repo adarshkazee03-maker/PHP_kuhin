@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ resource.title }} — KUHIN Resources{% endblock %}
+{% block meta_description %}{{ resource.description|striptags|truncatewords:30 }}{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="resource-title">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;">
+      <ol style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+        <li style="font-size:0.82rem;"><a href="/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Home</a><span style="margin-left:0.5rem;opacity:0.4;">/</span></li>
+        <li style="font-size:0.82rem;"><a href="{% url 'home:resources' %}" style="color:rgba(255,255,255,0.6);text-decoration:none;">Resources</a><span style="margin-left:0.5rem;opacity:0.4;">/</span></li>
+        <li style="font-size:0.82rem;color:rgba(255,255,255,0.8);" aria-current="page">{{ resource.title|truncatechars:40 }}</li>
+      </ol>
+    </nav>
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <span class="ku-tag" style="background:rgba(200,151,58,0.2);color:#E8C76A;">{{ resource.category.name }}</span>
+      <span class="ku-tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);">{{ resource.get_resource_type_display }}</span>
+    </div>
+    <h1 id="resource-title" class="hero-headline" style="font-size:clamp(1.8rem,4vw,3rem);">{{ resource.title }}</h1>
+    <p style="color:rgba(255,255,255,0.6);font-size:0.88rem;margin-top:1rem;">
+      <i class="fas fa-user me-1" aria-hidden="true"></i>{{ resource.uploaded_by }}
+      &nbsp;·&nbsp;
+      <i class="fas fa-calendar me-1" aria-hidden="true"></i>{{ resource.uploaded_at|date:"F j, Y" }}
+    </p>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+    <div class="row g-5">
+
+      <div class="col-lg-8 reveal">
+        <!-- Thumbnail -->
+        {% if resource.thumbnail %}
+          <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;box-shadow:var(--shadow-md);">
+            <img src="{{ resource.thumbnail.url }}" alt="{{ resource.title }}" style="width:100%;display:block;" loading="eager">
+          </div>
+        {% endif %}
+
+        <div class="ku-card p-5" style="border-top:3px solid var(--color-primary);">
+          <h2 style="font-size:1.2rem;margin-bottom:1.25rem;">Description</h2>
+          <div class="rich-content" style="color:var(--ku-gray-700);line-height:1.8;font-size:0.95rem;">
+            {{ resource.description|safe }}
+          </div>
+          {% if resource.tags %}
+            <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--color-border);">
+              <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:0.75rem;">Tags</p>
+              <p style="font-size:0.88rem;color:var(--ku-gray-600);">{{ resource.tags }}</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-lg-4 reveal reveal-delay-1">
+        <!-- Access card -->
+        <div class="ku-card p-5 mb-4" style="position:sticky;top:100px;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:1.25rem;">Access Resource</h3>
+          {% if resource.file %}
+            <a href="{{ resource.file.url }}" target="_blank" rel="noopener noreferrer"
+               class="btn-ku btn-gold-ku" style="width:100%;justify-content:center;text-decoration:none;margin-bottom:0.75rem;">
+              <i class="fas fa-download me-2" aria-hidden="true"></i> Download File
+            </a>
+          {% endif %}
+          {% if resource.external_link %}
+            <a href="{{ resource.external_link }}" target="_blank" rel="noopener noreferrer"
+               class="btn-ku {% if resource.file %}btn-outline-dark-ku{% else %}btn-gold-ku{% endif %}"
+               style="width:100%;justify-content:center;text-decoration:none;margin-bottom:1rem;">
+              <i class="fas fa-external-link-alt me-2" aria-hidden="true"></i> Open Link
+            </a>
+          {% endif %}
+          {% if not resource.file and not resource.external_link %}
+            <p style="font-size:0.82rem;color:var(--color-muted);text-align:center;padding:0.75rem 0;">
+              No direct access link available. Contact KUHIN for this resource.
+            </p>
+          {% endif %}
+          <dl style="margin:0;">
+            <div style="display:flex;flex-direction:column;margin-bottom:1rem;">
+              <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Category</dt>
+              <dd style="margin:0;font-size:0.9rem;color:var(--ku-gray-700);">{{ resource.category.name }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;margin-bottom:1rem;">
+              <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Type</dt>
+              <dd style="margin:0;font-size:0.9rem;color:var(--ku-gray-700);">{{ resource.get_resource_type_display }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;margin-bottom:1rem;">
+              <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Added By</dt>
+              <dd style="margin:0;font-size:0.9rem;color:var(--ku-gray-700);">{{ resource.uploaded_by }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;">
+              <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Date Added</dt>
+              <dd style="margin:0;font-size:0.9rem;color:var(--ku-gray-700);">{{ resource.uploaded_at|date:"F j, Y" }}</dd>
+            </div>
+          </dl>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--color-border);">
+            <a href="{% url 'home:resources' %}" class="btn-ku btn-outline-dark-ku" style="width:100%;justify-content:center;text-decoration:none;font-size:0.85rem;">
+              <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> All Resources
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related resources -->
+    {% if related_resources %}
+      <div style="margin-top:3rem;">
+        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;" class="reveal">More in {{ resource.category.name }}</h3>
+        <div class="row g-4">
+          {% for r in related_resources %}
+            <div class="col-lg-3 col-md-6 reveal">
+              <a href="{% url 'home:resource_detail' r.slug %}" style="text-decoration:none;display:block;height:100%;">
+                <div class="ku-card p-4 h-100">
+                  <span class="ku-tag ku-tag-gray" style="margin-bottom:0.75rem;display:inline-block;">{{ r.get_resource_type_display }}</span>
+                  <h4 style="font-size:0.92rem;font-weight:700;color:var(--ku-gray-900);margin-bottom:0.5rem;line-height:1.4;">{{ r.title }}</h4>
+                  <p style="font-size:0.8rem;color:var(--color-muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ r.description|striptags|truncatechars:100 }}</p>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  .rich-content p{margin-bottom:1rem;}
+  .rich-content ul,.rich-content ol{padding-left:1.5rem;margin-bottom:1rem;}
+  .rich-content li{margin-bottom:0.4rem;line-height:1.7;}
+  .rich-content a{color:var(--color-primary);}
+</style>
+{% endblock %}

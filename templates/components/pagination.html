@@ -1,0 +1,33 @@
+{% if page_obj.has_other_pages %}
+<nav class="pagination" aria-label="Pagination">
+  <ul class="pagination__list">
+    {% if page_obj.has_previous %}
+      <li>
+        <a href="?page={{ page_obj.previous_page_number }}"
+           class="pagination__link"
+           aria-label="Previous page">
+          <i class="fas fa-chevron-left fa-xs" aria-hidden="true"></i>
+        </a>
+      </li>
+    {% endif %}
+    {% for i in page_obj.paginator.page_range %}
+      <li>
+        <a href="?page={{ i }}"
+           class="pagination__link{% if page_obj.number == i %} pagination__link--current{% endif %}"
+           {% if page_obj.number == i %}aria-current="page"{% endif %}>
+          {{ i }}
+        </a>
+      </li>
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li>
+        <a href="?page={{ page_obj.next_page_number }}"
+           class="pagination__link"
+           aria-label="Next page">
+          <i class="fas fa-chevron-right fa-xs" aria-hidden="true"></i>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

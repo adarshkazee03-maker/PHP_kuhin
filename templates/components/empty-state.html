@@ -1,0 +1,8 @@
+{% comment %}
+Usage: {% include 'components/empty-state.html' with icon="fas fa-folder" title="No items found" message="Description text here" %}
+{% endcomment %}
+<div class="empty-state">
+  <div class="empty-icon"><i class="{{ icon|default:'fas fa-inbox' }}" aria-hidden="true"></i></div>
+  <h5>{{ title|default:"Nothing here yet" }}</h5>
+  <p>{{ message|default:"Check back soon." }}</p>
+</div>

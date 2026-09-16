@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Resource Library — KUHIN{% endblock %}
+{% block meta_description %}A curated collection of health informatics learning materials, tools, research papers, and documentation for KUHIN members and the broader community.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="resources-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <span class="hero-label"><i class="fas fa-book-open me-2"></i>Resource Library</span>
+        <h1 id="resources-heading" class="hero-headline mt-3">Health Informatics Resources</h1>
+        <p class="hero-subtitle mt-4">
+          Curated learning materials, tools, research papers, and documentation for health informatics students and professionals.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+
+    <!-- Category filter -->
+    {% if categories %}
+      <div class="d-flex flex-wrap gap-2 mb-5 reveal" role="navigation" aria-label="Filter by category">
+        <a href="{% url 'home:resources' %}" class="btn-ku {% if not selected_category %}btn-primary-ku{% else %}btn-outline-dark-ku{% endif %}" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">
+          All
+        </a>
+        {% for cat in categories %}
+          <a href="{% url 'home:resources' %}?category={{ cat.slug }}"
+             class="btn-ku {% if selected_category == cat.slug %}btn-primary-ku{% else %}btn-outline-dark-ku{% endif %}"
+             style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">
+            {{ cat.name }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if resources %}
+      <div class="row g-4">
+        {% for resource in resources %}
+          <div class="col-lg-4 col-md-6 reveal">
+            <article class="resource-card">
+              <!-- Icon -->
+              <div class="resource-icon"
+                style="{% if resource.resource_type == 'document' %}background:rgba(41,82,163,0.08);color:var(--color-primary);{% elif resource.resource_type == 'video' %}background:rgba(239,68,68,0.08);color:#EF4444;{% elif resource.resource_type == 'tool' %}background:rgba(14,143,122,0.08);color:var(--ku-teal);{% else %}background:rgba(200,151,58,0.08);color:var(--ku-gold);{% endif %}">
+                {% if resource.resource_type == 'document' %}<i class="fas fa-file-alt" aria-hidden="true"></i>
+                {% elif resource.resource_type == 'video' %}<i class="fas fa-play-circle" aria-hidden="true"></i>
+                {% elif resource.resource_type == 'tool' %}<i class="fas fa-tools" aria-hidden="true"></i>
+                {% else %}<i class="fas fa-link" aria-hidden="true"></i>{% endif %}
+              </div>
+              <!-- Meta -->
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="ku-tag ku-tag-blue">{{ resource.category.name }}</span>
+                <span class="ku-tag ku-tag-gray">{{ resource.get_resource_type_display }}</span>
+              </div>
+              <!-- Title & desc -->
+              <h3 style="font-size:1rem;font-weight:700;color:var(--ku-gray-900);margin-bottom:0.5rem;line-height:1.4;">{{ resource.title }}</h3>
+              <p style="font-size:0.85rem;color:var(--color-muted);line-height:1.6;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+                {{ resource.description|striptags|truncatechars:140 }}
+              </p>
+              <!-- Footer -->
+              <div style="margin-top:auto;padding-top:1rem;border-top:1px solid var(--color-border);">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+                  <span style="font-size:0.75rem;color:var(--color-muted);">
+                    <i class="fas fa-calendar-alt me-1" aria-hidden="true"></i>{{ resource.uploaded_at|date:"M d, Y" }}
+                  </span>
+                  <span style="font-size:0.75rem;color:var(--color-muted);">{{ resource.uploaded_by }}</span>
+                </div>
+                <a href="{% url 'home:resource_detail' resource.slug %}" class="btn-ku btn-primary-ku" style="width:100%;justify-content:center;font-size:0.85rem;text-decoration:none;">
+                  <i class="fas fa-eye me-2" aria-hidden="true"></i> View Details
+                </a>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state reveal">
+        <div class="empty-icon"><i class="fas fa-book" aria-hidden="true"></i></div>
+        <h5>Resource Library Coming Soon</h5>
+        <p>We're curating high-quality learning materials. Check back soon!</p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

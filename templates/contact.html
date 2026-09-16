@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us — KUHIN{% endblock %}
+{% block meta_description %}Get in touch with KUHIN — Kathmandu University Health Informatics Network. Questions, collaboration, or membership enquiries welcome.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="contact-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-7">
+        <span class="hero-label"><i class="fas fa-envelope me-2"></i>Get in Touch</span>
+        <h1 id="contact-heading" class="hero-headline mt-3">Connect With KUHIN</h1>
+        <p class="hero-subtitle mt-4">
+          Questions, collaboration ideas, or interested in joining? We'd love to hear from you.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+
+    <!-- Flash messages -->
+    {% if messages %}
+      <div style="max-width:860px;margin:0 auto 2.5rem;" role="alert" aria-live="polite">
+        {% for message in messages %}
+          <div class="ku-alert {% if message.tags == 'success' %}success{% else %}error{% endif %}">
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}" aria-hidden="true" style="flex-shrink:0;margin-top:1px;font-size:1rem;"></i>
+            <span>{{ message }}</span>
+            <button type="button" onclick="this.parentElement.style.display='none'" aria-label="Dismiss"
+                    style="margin-left:auto;background:none;border:none;cursor:pointer;padding:0;opacity:0.5;flex-shrink:0;font-size:1rem;">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="row g-5">
+
+      <!-- LEFT — Info -->
+      <div class="col-lg-5 reveal">
+        <div class="d-flex flex-column gap-3 mb-4">
+          <div class="ku-card p-4" style="display:flex;align-items:flex-start;gap:1rem;">
+            <div style="width:44px;height:44px;border-radius:var(--radius-md);background:rgba(41,82,163,0.08);display:flex;align-items:center;justify-content:center;color:var(--color-primary);font-size:1rem;flex-shrink:0;"><i class="fas fa-envelope" aria-hidden="true"></i></div>
+            <div>
+              <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:0.25rem;">Email</p>
+              <a href="mailto:kuhin@ku.edu.np" style="font-weight:600;color:var(--ku-gray-800);font-size:0.95rem;text-decoration:none;">kuhin@ku.edu.np</a>
+            </div>
+          </div>
+          <div class="ku-card p-4" style="display:flex;align-items:flex-start;gap:1rem;">
+            <div style="width:44px;height:44px;border-radius:var(--radius-md);background:rgba(200,151,58,0.08);display:flex;align-items:center;justify-content:center;color:var(--ku-gold);font-size:1rem;flex-shrink:0;"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></div>
+            <div>
+              <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:0.25rem;">Location</p>
+              <address style="font-style:normal;font-weight:600;color:var(--ku-gray-800);font-size:0.92rem;line-height:1.5;">
+                Kathmandu University<br>Dhulikhel, Kavre, Nepal
+              </address>
+            </div>
+          </div>
+          <div class="ku-card p-4" style="display:flex;align-items:flex-start;gap:1rem;">
+            <div style="width:44px;height:44px;border-radius:var(--radius-md);background:rgba(14,143,122,0.08);display:flex;align-items:center;justify-content:center;color:var(--ku-teal);font-size:1rem;flex-shrink:0;"><i class="fas fa-clock" aria-hidden="true"></i></div>
+            <div>
+              <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:0.25rem;">Response Time</p>
+              <p style="font-weight:600;color:var(--ku-gray-800);font-size:0.92rem;margin:0;">Within 1–2 business days</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div style="border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md);height:240px;margin-bottom:1.5rem;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.12!2d85.5394!3d27.6197!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb098fe8f2b1ad%3A0x241afd754bfc2622!2sKathmandu%20University!5e0!3m2!1sen!2snp!4v1670000000000"
+                  width="100%" height="100%" style="border:none;display:block;" allowfullscreen="" loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade" title="KUHIN location" aria-label="Map showing Kathmandu University"></iframe>
+        </div>
+
+        <!-- Social -->
+        <div class="ku-card p-4">
+          <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:1rem;">Find Us Online</p>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="https://www.facebook.com/kuhin.ku" target="_blank" rel="noopener noreferrer" class="btn-ku btn-outline-dark-ku" style="font-size:0.82rem;padding:0.45rem 1rem;text-decoration:none;" aria-label="Facebook"><i class="fab fa-facebook-f me-1"></i> Facebook</a>
+            <a href="https://www.linkedin.com/company/kuhin" target="_blank" rel="noopener noreferrer" class="btn-ku btn-outline-dark-ku" style="font-size:0.82rem;padding:0.45rem 1rem;text-decoration:none;" aria-label="LinkedIn"><i class="fab fa-linkedin-in me-1"></i> LinkedIn</a>
+            <a href="https://github.com/kuhin" target="_blank" rel="noopener noreferrer" class="btn-ku btn-outline-dark-ku" style="font-size:0.82rem;padding:0.45rem 1rem;text-decoration:none;" aria-label="GitHub"><i class="fab fa-github me-1"></i> GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — Form -->
+      <div class="col-lg-7 reveal reveal-delay-1">
+        <div class="ku-card p-5">
+          <h2 style="font-size:1.3rem;margin-bottom:0.5rem;">Send a Message</h2>
+          <p style="color:var(--color-muted);font-size:0.9rem;margin-bottom:2rem;">All fields are required. We'll reply within 1–2 business days.</p>
+
+          <form method="post" action="{% url 'home:contact' %}" novalidate>
+            {% csrf_token %}
+            <div class="row g-4">
+
+              <div class="col-md-6">
+                <label class="ku-label" for="id_name">Full Name <span style="color:#C0392B;" aria-label="required">*</span></label>
+                <input type="text" id="id_name" name="name" class="ku-input" placeholder="Your full name"
+                       value="{{ form.name.value|default:'' }}" required autocomplete="name"
+                       {% if form.name.errors %}style="border-color:#C0392B;"{% endif %}>
+                {% if form.name.errors %}<p role="alert" style="color:#C0392B;font-size:0.8rem;margin-top:0.4rem;"><i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>{{ form.name.errors.0 }}</p>{% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="ku-label" for="id_email">Email Address <span style="color:#C0392B;" aria-label="required">*</span></label>
+                <input type="email" id="id_email" name="email" class="ku-input" placeholder="your@email.com"
+                       value="{{ form.email.value|default:'' }}" required autocomplete="email"
+                       {% if form.email.errors %}style="border-color:#C0392B;"{% endif %}>
+                {% if form.email.errors %}<p role="alert" style="color:#C0392B;font-size:0.8rem;margin-top:0.4rem;"><i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>{{ form.email.errors.0 }}</p>{% endif %}
+              </div>
+
+              <div class="col-12">
+                <label class="ku-label" for="id_subject">Subject <span style="color:#C0392B;" aria-label="required">*</span></label>
+                <input type="text" id="id_subject" name="subject" class="ku-input" placeholder="What is this about?"
+                       value="{{ form.subject.value|default:'' }}" required
+                       {% if form.subject.errors %}style="border-color:#C0392B;"{% endif %}>
+                {% if form.subject.errors %}<p role="alert" style="color:#C0392B;font-size:0.8rem;margin-top:0.4rem;"><i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>{{ form.subject.errors.0 }}</p>{% endif %}
+              </div>
+
+              <div class="col-12">
+                <label class="ku-label" for="id_message">Message <span style="color:#C0392B;" aria-label="required">*</span></label>
+                <textarea id="id_message" name="message" class="ku-input" rows="6"
+                          style="resize:vertical;font-family:var(--font-body);"
+                          placeholder="Tell us how we can help…" required
+                          {% if form.message.errors %}style="border-color:#C0392B;resize:vertical;font-family:var(--font-body);"{% endif %}>{{ form.message.value|default:'' }}</textarea>
+                {% if form.message.errors %}<p role="alert" style="color:#C0392B;font-size:0.8rem;margin-top:0.4rem;"><i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>{{ form.message.errors.0 }}</p>{% endif %}
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn-ku btn-primary-ku">
+                  <i class="fas fa-paper-plane me-2" aria-hidden="true"></i> Send Message
+                </button>
+                <p style="font-size:0.78rem;color:var(--color-muted);margin-top:1rem;margin-bottom:0;">
+                  <i class="fas fa-shield-alt me-1" aria-hidden="true"></i>
+                  Your information is kept private and never shared with third parties.
+                </p>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

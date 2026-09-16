@@ -1,0 +1,51 @@
+databases:
+  - name: kuhin-db
+    databaseName: kuhin_db
+    user: kuhin_user
+    plan: free
+
+services:
+  - type: web
+    name: kuhin-web
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --no-input --settings=kuhin_project.settings.prod
+      python manage.py migrate --settings=kuhin_project.settings.prod
+    startCommand: >
+      gunicorn kuhin_project.wsgi:application 
+      --bind 0.0.0.0:$PORT 
+      --workers 2 
+      --worker-class sync 
+      --timeout 120
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: DJANGO_SETTINGS_MODULE
+        value: kuhin_project.settings.prod
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kuhin-db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: "*.onrender.com"
+      - key: EMAIL_HOST
+        value: "smtp.gmail.com"
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USE_TLS
+        value: "True"
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Events & Activities — KUHIN{% endblock %}
+{% block meta_description %}Upcoming workshops, seminars, hackathons, and community events from the KUHIN health informatics club at Kathmandu University.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="events-hero-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <span class="hero-label"><i class="fas fa-calendar-alt me-2"></i>Schedule</span>
+        <h1 id="events-hero-heading" class="hero-headline mt-3">Events & Activities</h1>
+        <p class="hero-subtitle mt-4">
+          Hands-on workshops, expert seminars, networking sessions, and collaborative learning opportunities throughout the year.
+        </p>
+        <div class="d-flex gap-3 flex-wrap mt-5">
+          <a href="#upcoming" class="btn-ku btn-gold-ku" style="text-decoration:none;">Browse Upcoming</a>
+          <a href="#past" class="btn-ku btn-outline-ku" style="text-decoration:none;">Past Archive</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="main-content">
+
+  <!-- UPCOMING EVENTS -->
+  <section class="section-white section-pad" id="upcoming" aria-labelledby="upcoming-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag"><i class="fas fa-star me-2"></i>Coming Up</span>
+        <h2 id="upcoming-heading" class="section-title" style="margin-top:0.75rem;">Upcoming Events</h2>
+      </div>
+
+      {% if upcoming_events %}
+        <div class="row g-4">
+          {% for event in upcoming_events %}
+            <div class="col-lg-6 reveal reveal-delay-{{ forloop.counter|divisibleby:3|yesno:'3,,' }}{% if forloop.counter|divisibleby:2 %} reveal-delay-2{% elif forloop.counter == 1 %} reveal-delay-1{% endif %}">
+              <article class="event-card" aria-label="{{ event.title }}">
+                <div class="event-date-col" aria-label="Date: {{ event.date|date:'F j, Y' }}">
+                  <span class="event-month">{{ event.date|date:"M" }}</span>
+                  <span class="event-day">{{ event.date|date:"d" }}</span>
+                  <span class="event-year">{{ event.date|date:"Y" }}</span>
+                  {% if event.start_time %}
+                    <div style="margin-top:0.5rem;font-size:0.68rem;background:rgba(255,255,255,0.15);border-radius:999px;padding:2px 8px;">
+                      {{ event.start_time|time:"H:i" }}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="event-content">
+                  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <span class="event-type-badge">{{ event.event_type }}</span>
+                    {% if event.registration_link %}
+                      <span class="ku-tag ku-tag-teal">
+                        <i class="fas fa-circle" style="font-size:0.4rem;vertical-align:middle;margin-right:4px;"></i> Open
+                      </span>
+                    {% endif %}
+                  </div>
+                  <h3 class="event-title">{{ event.title }}</h3>
+                  <p class="event-loc mb-3">
+                    <i class="fas fa-map-marker-alt me-1" style="color:var(--ku-gold);" aria-hidden="true"></i>
+                    {{ event.location }}
+                  </p>
+                  <p style="font-size:0.85rem;color:var(--color-muted);line-height:1.6;margin-bottom:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                    {{ event.description|striptags|truncatewords:22 }}
+                  </p>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <a href="{% url 'home:event_detail' event.slug %}" class="btn-ku btn-outline-dark-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">Details</a>
+                    {% if event.registration_link %}
+                      <a href="{{ event.registration_link }}" target="_blank" rel="noopener noreferrer" class="btn-ku btn-primary-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">
+                        <i class="fas fa-arrow-right me-1"></i> Register
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state reveal">
+          <div class="empty-icon"><i class="fas fa-calendar-plus" aria-hidden="true"></i></div>
+          <h5>No Upcoming Events Yet</h5>
+          <p>We're planning something exciting. <a href="{% url 'home:contact' %}">Get notified</a> when events are announced.</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- PAST EVENTS -->
+  <section class="section-light section-pad" id="past" aria-labelledby="past-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag"><i class="fas fa-archive me-2"></i>Archive</span>
+        <h2 id="past-heading" class="section-title" style="margin-top:0.75rem;">Past Events</h2>
+      </div>
+
+      {% if past_events %}
+        <div class="row g-4">
+          {% for event in past_events %}
+            <div class="col-lg-4 col-md-6 reveal">
+              <article class="ku-card h-100 p-0 overflow-hidden">
+                {% if event.image %}
+                  <div style="height:180px;overflow:hidden;">
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy"
+                         style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;">
+                  </div>
+                {% else %}
+                  <div style="height:180px;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-calendar-check fa-3x" style="color:rgba(255,255,255,0.2);" aria-hidden="true"></i>
+                  </div>
+                {% endif %}
+                <div style="padding:1.5rem;">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="ku-tag ku-tag-gray" style="text-transform:none;font-size:0.72rem;letter-spacing:0;">{{ event.date|date:"M d, Y" }}</span>
+                    <span class="ku-tag ku-tag-blue">{{ event.event_type }}</span>
+                  </div>
+                  <h4 style="font-size:0.98rem;font-weight:700;margin-bottom:0.5rem;color:var(--ku-gray-900);">{{ event.title }}</h4>
+                  <p style="font-size:0.82rem;color:var(--color-muted);margin-bottom:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                    {{ event.description|striptags|truncatewords:18 }}
+                  </p>
+                  <a href="{% url 'home:event_detail' event.slug %}" class="card-footer-link" style="font-size:0.82rem;text-decoration:none;">
+                    View Recap <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state reveal">
+          <div class="empty-icon"><i class="fas fa-history" aria-hidden="true"></i></div>
+          <h5>No Past Events Yet</h5>
+          <p>Our event archive will appear here as activities are completed.</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+</div><!-- /#main-content -->
+{% endblock %}

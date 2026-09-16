@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About KUHIN — Kathmandu University Health Informatics Network{% endblock %}
+{% block meta_description %}Learn about KUHIN — our mission, vision, values, and the story of Nepal's premier health informatics student community at Kathmandu University.{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<section class="page-hero has-photo" aria-labelledby="about-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager" fetchpriority="high">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <span class="hero-label"><i class="fas fa-info-circle me-2"></i> About Us</span>
+        <h1 id="about-heading" class="hero-headline mt-3">
+          Advancing Health Informatics Excellence
+        </h1>
+        <p class="hero-subtitle mt-4">
+          Kathmandu University Health Informatics Network empowers the next generation of healthcare innovators through collaborative learning, research, and technology development.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFICIAL DETAILS + LOGO -->
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+    <div class="row align-items-center gy-5 g-lg-5">
+      <div class="col-lg-6 reveal">
+        <span class="section-tag"><i class="fas fa-building me-2"></i>Official Details</span>
+        <h2 style="margin:1rem 0 2rem;">Organization Profile</h2>
+        <div class="d-flex flex-column gap-3">
+          {% for item in profile_items|default:"" %}
+            <div class="ku-card p-4">
+              <p class="overline" style="color:var(--color-primary);">{{ item.label }}</p>
+              <p style="margin:0;font-weight:500;color:var(--ku-gray-800);">{{ item.value }}</p>
+            </div>
+          {% empty %}
+            <div class="ku-card p-4">
+              <p class="overline" style="color:var(--color-primary);">Organization Name</p>
+              <p style="margin:0;font-weight:500;">Kathmandu University Health Informatics Network (KUHIN)</p>
+            </div>
+            <div class="ku-card p-4">
+              <p class="overline" style="color:var(--color-primary);">Department</p>
+              <p style="margin:0;font-weight:500;">Department of Health Informatics, School of Engineering</p>
+            </div>
+            <div class="ku-card p-4">
+              <p class="overline" style="color:var(--color-primary);">Location</p>
+              <p style="margin:0;font-weight:500;">Kathmandu University, Dhulikhel, Kavre, Nepal</p>
+            </div>
+            <div class="ku-card p-4">
+              <p class="overline" style="color:var(--color-primary);">Governance</p>
+              <p style="margin:0;font-weight:500;">Governed by KUHIN Constitution (2026)</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-6 reveal reveal-delay-1 text-center">
+        <div style="background:var(--grad-card);border-radius:var(--radius-xl);padding:3rem;border:1px solid var(--color-border);">
+          <img src="{% static 'images/Kuhin_logo.png' %}" alt="KUHIN official logo" style="max-width:280px;width:100%;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION & VISION -->
+<section class="section-light section-pad" aria-labelledby="mission-heading">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-tag"><i class="fas fa-bullseye me-2"></i>Purpose</span>
+      <h2 id="mission-heading" class="section-title" style="margin:0.75rem auto 0;max-width:400px;">Mission & Vision</h2>
+    </div>
+    <div class="row g-4 mt-2">
+      <div class="col-lg-6 reveal reveal-delay-1">
+        <div class="ku-card p-5 h-100">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div style="width:52px;height:52px;border-radius:var(--radius-md);background:rgba(41,82,163,0.08);display:flex;align-items:center;justify-content:center;color:var(--color-primary);font-size:1.3rem;flex-shrink:0;">
+              <i class="fas fa-bullseye" aria-hidden="true"></i>
+            </div>
+            <h3 style="margin:0;">Our Mission</h3>
+          </div>
+          <p style="color:var(--color-muted);line-height:1.8;margin-bottom:1.5rem;">
+            To advance the academic, technical, professional, and collaborative growth of all Health Informatics students through innovation, research, and practical application of health information technology.
+          </p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem;">
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-teal);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              Promote academic excellence in health informatics
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-teal);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              Facilitate research and innovation opportunities
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-teal);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              Build meaningful industry connections
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-teal);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              Drive social impact through healthcare technology
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 reveal reveal-delay-2">
+        <div class="ku-card p-5 h-100">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div style="width:52px;height:52px;border-radius:var(--radius-md);background:rgba(200,151,58,0.1);display:flex;align-items:center;justify-content:center;color:var(--ku-gold);font-size:1.3rem;flex-shrink:0;">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </div>
+            <h3 style="margin:0;">Our Vision</h3>
+          </div>
+          <p style="color:var(--color-muted);line-height:1.8;margin-bottom:1.5rem;">
+            To create a vibrant ecosystem where health informatics students develop cutting-edge solutions that transform healthcare delivery and improve patient outcomes through technology and data-driven decision making.
+          </p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem;">
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-gold);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              Innovation-driven problem solving mindset
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-gold);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              Global perspective with local relevance
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-gold);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              High professional and ethical standards
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;font-size:0.92rem;color:var(--ku-gray-700);">
+              <i class="fas fa-check-circle" style="color:var(--ku-gold);margin-top:2px;flex-shrink:0;" aria-hidden="true"></i>
+              Inclusive, collaborative community culture
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO SYMBOLISM -->
+<section class="section-white section-pad" aria-labelledby="logo-heading">
+  <div class="container">
+    <div class="row align-items-center gy-5 g-lg-5">
+      <div class="col-lg-4 text-center reveal">
+        <img src="{% static 'images/Kuhin_logo.png' %}" alt="KUHIN logo symbolism" style="max-width:240px;width:100%;">
+      </div>
+      <div class="col-lg-8 reveal reveal-delay-1">
+        <span class="section-tag"><i class="fas fa-palette me-2"></i>Brand Identity</span>
+        <h2 id="logo-heading" style="margin:1rem 0 0.75rem;">Our Logo — Symbolism</h2>
+        <p style="color:var(--color-muted);margin-bottom:2rem;line-height:1.7;">
+          The KUHIN logo integrates six core principles that define our identity and mission at the intersection of health and technology.
+        </p>
+        <div class="row g-3">
+          {% for symbol in logo_symbols|default:"" %}
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div style="color:var(--color-primary);font-size:1.3rem;min-width:28px;margin-top:2px;"><i class="{{ symbol.icon }}" aria-hidden="true"></i></div>
+                <div><h6 style="margin-bottom:0.25rem;">{{ symbol.name }}</h6><p style="font-size:0.85rem;color:var(--color-muted);margin:0;">{{ symbol.desc }}</p></div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div style="color:var(--color-primary);font-size:1.3rem;min-width:28px;margin-top:2px;"><i class="fas fa-heart" aria-hidden="true"></i></div>
+                <div><h6 style="margin-bottom:0.25rem;">Healthcare</h6><p style="font-size:0.85rem;color:var(--color-muted);margin:0;">Improving patient and population health outcomes</p></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div style="color:var(--color-primary);font-size:1.3rem;min-width:28px;margin-top:2px;"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
+                <div><h6 style="margin-bottom:0.25rem;">Data</h6><p style="font-size:0.85rem;color:var(--color-muted);margin:0;">Evidence-based decision making through analytics</p></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div style="color:var(--color-primary);font-size:1.3rem;min-width:28px;margin-top:2px;"><i class="fas fa-microchip" aria-hidden="true"></i></div>
+                <div><h6 style="margin-bottom:0.25rem;">Technology</h6><p style="font-size:0.85rem;color:var(--color-muted);margin:0;">Innovative digital and AI solutions</p></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div style="color:var(--color-primary);font-size:1.3rem;min-width:28px;margin-top:2px;"><i class="fas fa-users" aria-hidden="true"></i></div>
+                <div><h6 style="margin-bottom:0.25rem;">Community</h6><p style="font-size:0.85rem;color:var(--color-muted);margin:0;">Collaborative learning and peer support network</p></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div style="color:var(--color-primary);font-size:1.3rem;min-width:28px;margin-top:2px;"><i class="fas fa-flask" aria-hidden="true"></i></div>
+                <div><h6 style="margin-bottom:0.25rem;">Research</h6><p style="font-size:0.85rem;color:var(--color-muted);margin:0;">Rigorous scientific inquiry and publication</p></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div style="color:var(--color-primary);font-size:1.3rem;min-width:28px;margin-top:2px;"><i class="fas fa-handshake" aria-hidden="true"></i></div>
+                <div><h6 style="margin-bottom:0.25rem;">Partnership</h6><p style="font-size:0.85rem;color:var(--color-muted);margin:0;">Strategic alliances with hospitals and institutions</p></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-light section-pad-sm">
+  <div class="container text-center reveal">
+    <h3 style="margin-bottom:1rem;">Ready to be part of KUHIN?</h3>
+    <p style="color:var(--color-muted);margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;">
+      Join a community of students and professionals shaping the future of healthcare in Nepal.
+    </p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="{% url 'home:contact' %}" class="btn-ku btn-primary-ku" style="text-decoration:none;">Join Us</a>
+      <a href="{% url 'home:team' %}" class="btn-ku btn-outline-dark-ku" style="text-decoration:none;">Meet the Team</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

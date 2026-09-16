@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog — KUHIN Health Informatics{% endblock %}
+{% block meta_description %}Insights, case studies, and in-depth articles on health informatics, clinical data science, EHR systems, and healthcare technology from the KUHIN community.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="blog-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <span class="hero-label"><i class="fas fa-pen-nib me-2"></i>Insights & Stories</span>
+        <h1 id="blog-heading" class="hero-headline mt-3">KUHIN Blog</h1>
+        <p class="hero-subtitle mt-4">
+          Articles, case studies, and insights from our community on health informatics, AI in healthcare, and technology innovation in Nepal.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+
+    <!-- Search + Category filter -->
+    <div class="ku-card p-4 mb-5 reveal">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-7">
+          <form method="get" action="" role="search">
+            <div style="position:relative;">
+              <i class="fas fa-search" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--color-muted);font-size:0.85rem;" aria-hidden="true"></i>
+              <input type="text" name="search" value="{{ search_query|default:'' }}"
+                     placeholder="Search articles…"
+                     style="width:100%;padding:0.75rem 1rem 0.75rem 2.75rem;border:1.5px solid var(--color-border);border-radius:var(--radius-full);font-family:var(--font-body);font-size:0.9rem;outline:none;"
+                     aria-label="Search articles"
+                     onchange="this.form.submit()">
+            </div>
+          </form>
+        </div>
+        <div class="col-md-5">
+          <select aria-label="Filter by category"
+                  onchange="window.location.href=this.value"
+                  style="width:100%;padding:0.75rem 1rem;border:1.5px solid var(--color-border);border-radius:var(--radius-full);font-family:var(--font-body);font-size:0.9rem;outline:none;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 1rem center;cursor:pointer;">
+            <option value="{% url 'blog:blog_list' %}">All Categories</option>
+            {% for cat in categories %}
+              <option value="{% url 'blog:blog_list' %}?category={{ cat.slug }}"
+                      {% if selected_category == cat.slug %}selected{% endif %}>
+                {{ cat.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      {% if search_query %}
+        <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.85rem;color:var(--color-muted);">
+          Showing results for <strong>"{{ search_query }}"</strong> —
+          <a href="{% url 'blog:blog_list' %}" style="color:var(--color-primary);">Clear</a>
+        </p>
+      {% endif %}
+    </div>
+
+    {% if blogs %}
+      <div class="row g-4">
+        {% for blog in blogs %}
+          <div class="col-lg-4 col-md-6 reveal">
+            <article class="blog-card">
+              <div class="card-thumb">
+                {% if blog.featured_image %}
+                  <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy">
+                {% else %}
+                  <div style="width:100%;height:100%;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-newspaper fa-3x" style="color:rgba(255,255,255,0.2);" aria-hidden="true"></i>
+                  </div>
+                {% endif %}
+                {% if blog.category %}
+                  <span class="card-badge">{{ blog.category.name }}</span>
+                {% endif %}
+                {% if blog.is_featured %}
+                  <span style="position:absolute;top:0.75rem;left:0.75rem;background:var(--grad-gold);color:var(--ku-navy);font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;padding:2px 8px;border-radius:999px;">Featured</span>
+                {% endif %}
+              </div>
+              <div class="card-body">
+                <div class="card-meta">
+                  <span><i class="fas fa-calendar me-1" aria-hidden="true"></i>{{ blog.published_date|date:"M d, Y" }}</span>
+                  <span><i class="fas fa-eye me-1" aria-hidden="true"></i>{{ blog.views }}</span>
+                </div>
+                <h2 class="card-title">
+                  <a href="{% url 'blog:blog_detail' blog.slug %}" style="color:inherit;text-decoration:none;">{{ blog.title }}</a>
+                </h2>
+                <p class="card-excerpt">{{ blog.excerpt }}</p>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:1rem;border-top:1px solid var(--color-border);">
+                  <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="width:28px;height:28px;border-radius:50%;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;">
+                      {{ blog.author.first_name|first|default:blog.author.username|first|upper }}
+                    </div>
+                    <span style="font-size:0.78rem;color:var(--color-muted);">{{ blog.author.get_full_name|default:blog.author.username }}</span>
+                  </div>
+                  <a href="{% url 'blog:blog_detail' blog.slug %}" class="card-footer-link" aria-label="Read: {{ blog.title }}">
+                    Read <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state reveal">
+        <div class="empty-icon"><i class="fas fa-book-open" aria-hidden="true"></i></div>
+        <h5>No Articles Found</h5>
+        <p>
+          {% if search_query %}
+            No results for "{{ search_query }}". <a href="{% url 'blog:blog_list' %}">Browse all articles</a>.
+          {% else %}
+            Articles are being written. Check back soon!
+          {% endif %}
+        </p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

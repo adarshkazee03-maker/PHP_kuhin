@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+startCmd = "python manage.py migrate --settings=kuhin_project.settings.prod && python manage.py collectstatic --no-input --settings=kuhin_project.settings.prod"
+
+[deploy]
+startCommand = "gunicorn kuhin_project.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --worker-class sync"
+restartPolicyType = "on-failure"
+healthcheckPath = "/health/"

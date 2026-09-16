@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}KUHIN — Kathmandu University Health Informatics Network{% endblock %}
+{% block meta_description %}KUHIN empowers Nepal's next generation of health informatics professionals through innovation, research, and community at Kathmandu University.{% endblock %}
+{% block body_page %}home{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero-section" aria-labelledby="hero-heading" style="position:relative;">
+  <!-- Real campus background photo with gradient overlay -->
+  <div style="position:absolute;inset:0;z-index:0;">
+    <img src="{% static 'images/kuhin-hero-banner.png' %}" alt=""
+         aria-hidden="true"
+         style="width:100%;height:100%;object-fit:cover;object-position:center 30%;"
+         loading="eager" fetchpriority="high">
+    <div style="position:absolute;inset:0;background:linear-gradient(140deg,rgba(11,31,69,0.88) 0%,rgba(26,58,110,0.82) 50%,rgba(41,82,163,0.75) 100%);"></div>
+  </div>
+  <div class="container position-relative" style="z-index:2;padding-top:80px;">
+    <div class="row align-items-center gy-5">
+      
+      <div class="col-lg-7">
+        <span class="hero-label reveal">
+          <!-- <i class="fas fa-heartbeat me-2" aria-hidden="true"></i> -->
+          Kathmandu University 
+          <span style="color:var(--ku-gold);font-weight:700;">Health Informatics Network</span>
+        </span>
+        
+        <h1 id="hero-heading" class="hero-headline reveal reveal-delay-1" style="font-size:clamp(2.6rem,6vw,4.5rem);margin-bottom:1.5rem;">
+          Bridging <em>Data</em><br>& <em>Life</em>.
+        </h1>
+        
+        <p class="hero-body reveal reveal-delay-2">
+          Nepal's leading health informatics community. We empower students to solve real clinical challenges using data science, AI, and software engineering — at Kathmandu University.
+        </p>
+        
+        <div class="d-flex gap-3 flex-wrap mt-5 reveal reveal-delay-3">
+          <a href="{% url 'home:contact' %}" class="btn-ku btn-gold-ku" style="text-decoration:none;">
+            <i class="fas fa-user-plus me-2" aria-hidden="true"></i> Join KUHIN
+          </a>
+          <a href="{% url 'home:about' %}" class="btn-ku btn-outline-ku" style="text-decoration:none;">
+            Learn Our Story <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <!-- Stats row -->
+        <div class="d-flex gap-4 flex-wrap mt-5 reveal reveal-delay-4">
+          <div class="stat-chip">
+            <span class="stat-num"><span data-count="{{ members_count|default:500 }}">0</span>+</span>
+            <span class="stat-label">Members</span>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-num"><span data-count="{{ events_count|default:50 }}">0</span>+</span>
+            <span class="stat-label">Events</span>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-num"><span data-count="20">0</span>+</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Committed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero graphic with KUHIN Logo -->
+      <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center">
+        <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+          <!-- Animated ring -->
+          <div style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,0.08);animation:spin 20s linear infinite;"></div>
+          <div style="position:absolute;inset:20px;border-radius:50%;border:2px dashed rgba(200,151,58,0.25);animation:spin 15s linear infinite reverse;"></div>
+          <!-- Center logo - Larger and more prominent -->
+          <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;">
+            <img src="{% static 'images/Kuhin_logo.png' %}" alt="KUHIN logo" style="width:500px;height:500px;object-fit:contain;opacity:0.95;border-radius:50%;background:rgba(255,255,255,0.08);border:3px solid rgba(255,255,255,0.15);padding:30px;">
+          </div>
+          <!-- Floating pills -->
+          <div style="position:absolute;top:10%;right:-10%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(12px);border-radius:999px;padding:0.5rem 1rem;font-size:0.78rem;color:rgba(255,255,255,0.8);white-space:nowrap;font-weight:600;z-index:3;">
+            <i class="fas fa-brain me-1" style="color:var(--ku-gold);"></i> AI in Healthcare
+          </div>
+          <div style="position:absolute;bottom:15%;left:-15%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(12px);border-radius:999px;padding:0.5rem 1rem;font-size:0.78rem;color:rgba(255,255,255,0.8);white-space:nowrap;font-weight:600;z-index:3;">
+            <i class="fas fa-database me-1" style="color:#19B99A;"></i> Health Data
+          </div>
+          <div style="position:absolute;top:60%;right:-5%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(12px);border-radius:999px;padding:0.5rem 1rem;font-size:0.78rem;color:rgba(255,255,255,0.8);white-space:nowrap;font-weight:600;z-index:3;">
+            <i class="fas fa-code me-1" style="color:#4A90D9;"></i> FHIR & EHR
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom fade -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,var(--ku-gray-50),transparent);z-index:1;"></div>
+</section>
+
+<style>
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
+
+<!-- ═══════════════ WHY KUHIN ═══════════════ -->
+<section class="section-white section-pad" aria-labelledby="why-heading">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-tag"><i class="fas fa-star me-2" aria-hidden="true"></i>Why Join Us</span>
+      <h2 id="why-heading" class="section-title" style="margin:0.75rem auto 0;max-width:520px;">
+        Where Healthcare Meets Technology
+      </h2>
+      <p class="section-lead" style="margin:1.25rem auto 0;">
+        We operate at the intersection of medicine, data science, and software — creating real-world impact.
+      </p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      <div class="col-lg-4 col-md-6 reveal reveal-delay-1">
+        <div class="feature-card h-100">
+          <div class="feature-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
+          <h4>Academic Excellence</h4>
+          <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;margin-top:0.75rem;">
+            Workshops on HL7, FHIR, Python for Bio-statistics, EHR management, and cutting-edge health data standards.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 reveal reveal-delay-2">
+        <div class="feature-card h-100" style="border-top-color:var(--ku-teal);">
+          <div class="feature-icon" style="background:rgba(14,143,122,0.08);color:var(--ku-teal);"><i class="fas fa-handshake" aria-hidden="true"></i></div>
+          <h4>Industry Connections</h4>
+          <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;margin-top:0.75rem;">
+            Direct networking with Nepal's leading hospitals, health-tech startups, and international health organizations.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 reveal reveal-delay-3">
+        <div class="feature-card h-100" style="border-top-color:var(--ku-gold);">
+          <div class="feature-icon" style="background:rgba(200,151,58,0.08);color:var(--ku-gold);"><i class="fas fa-laptop-code" aria-hidden="true"></i></div>
+          <h4>Practical Innovation</h4>
+          <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;margin-top:0.75rem;">
+            Build real-world projects that digitize patient records, improve care delivery, and address healthcare challenges in Nepal.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ UPCOMING EVENTS ═══════════════ -->
+<section class="section-light section-pad" aria-labelledby="events-heading">
+  <div class="container">
+    <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-5 reveal">
+      <div>
+        <span class="section-tag"><i class="fas fa-calendar me-2" aria-hidden="true"></i>Schedule</span>
+        <h2 id="events-heading" style="margin-top:0.75rem;margin-bottom:0;">Upcoming Events</h2>
+      </div>
+      <a href="{% url 'home:events' %}" class="btn-ku btn-outline-dark-ku" style="text-decoration:none;flex-shrink:0;">
+        View All <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    {% if upcoming_events %}
+      <div class="row g-4">
+        {% for event in upcoming_events|slice:":6" %}
+          <div class="col-lg-6 reveal reveal-delay-{{ forloop.counter }}">
+            <article class="event-card">
+              <div class="event-date-col" aria-label="{{ event.date|date:'F j, Y' }}">
+                <span class="event-month">{{ event.date|date:"M" }}</span>
+                <span class="event-day">{{ event.date|date:"d" }}</span>
+                <span class="event-year">{{ event.date|date:"Y" }}</span>
+              </div>
+              <div class="event-content">
+                <span class="event-type-badge">{{ event.event_type }}</span>
+                <h3 class="event-title">{{ event.title }}</h3>
+                <p class="event-loc">
+                  <i class="fas fa-map-marker-alt me-1" style="color:var(--ku-gold);" aria-hidden="true"></i>
+                  {{ event.location }}
+                  {% if event.start_time %}
+                    &nbsp;·&nbsp;
+                    <i class="fas fa-clock me-1" aria-hidden="true"></i>
+                    {{ event.start_time|time:"H:i" }}
+                  {% endif %}
+                </p>
+                <div class="d-flex gap-2 mt-3 flex-wrap">
+                  <a href="{% url 'home:event_detail' event.slug %}" class="btn-ku btn-outline-dark-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">Details</a>
+                  {% if event.registration_link %}
+                    <a href="{{ event.registration_link }}" target="_blank" rel="noopener" class="btn-ku btn-primary-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">Register</a>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state reveal">
+        <div class="empty-icon"><i class="fas fa-calendar-plus" aria-hidden="true"></i></div>
+        <h5>Exciting Events Coming Soon</h5>
+        <p>Check back soon or <a href="{% url 'home:contact' %}">contact us</a> to stay notified.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ═══════════════ LATEST BLOG POSTS ═══════════════ -->
+<section class="section-white section-pad" aria-labelledby="blog-heading">
+  <div class="container">
+    <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-5 reveal">
+      <div>
+        <span class="section-tag"><i class="fas fa-newspaper me-2" aria-hidden="true"></i>Knowledge Hub</span>
+        <h2 id="blog-heading" style="margin-top:0.75rem;margin-bottom:0;">Latest Insights</h2>
+      </div>
+      <a href="{% url 'blog:blog_list' %}" class="btn-ku btn-outline-dark-ku" style="text-decoration:none;flex-shrink:0;">
+        Explore Blog <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    {% if latest_blogs %}
+      <div class="row g-4">
+        {% for blog in latest_blogs|slice:":3" %}
+          <div class="col-lg-4 col-md-6 reveal reveal-delay-{{ forloop.counter }}">
+            <article class="blog-card">
+              <div class="card-thumb">
+                {% if blog.featured_image %}
+                  <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy">
+                {% else %}
+                  <div style="width:100%;height:100%;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-newspaper fa-3x" style="color:rgba(255,255,255,0.25);" aria-hidden="true"></i>
+                  </div>
+                {% endif %}
+                {% if blog.category %}
+                  <span class="card-badge">{{ blog.category.name }}</span>
+                {% endif %}
+              </div>
+              <div class="card-body">
+                <div class="card-meta">
+                  <span><i class="fas fa-calendar-alt me-1" aria-hidden="true"></i>{{ blog.published_date|date:"M d, Y" }}</span>
+                  <span><i class="fas fa-eye me-1" aria-hidden="true"></i>{{ blog.views }}</span>
+                </div>
+                <h3 class="card-title">
+                  <a href="{% url 'blog:blog_detail' blog.slug %}" style="color:inherit;text-decoration:none;">{{ blog.title }}</a>
+                </h3>
+                <p class="card-excerpt">{{ blog.excerpt }}</p>
+                <a href="{% url 'blog:blog_detail' blog.slug %}" class="card-footer-link" aria-label="Read: {{ blog.title }}">
+                  Read Article <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state reveal">
+        <div class="empty-icon"><i class="fas fa-pen-nib" aria-hidden="true"></i></div>
+        <h5>Articles Coming Soon</h5>
+        <p>Our team is writing insightful pieces on health informatics. Stay tuned!</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ═══════════════ MEMBER SPOTLIGHTS ═══════════════ -->
+{% if testimonial_members %}
+<section class="section-light section-pad" aria-labelledby="members-heading">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-tag"><i class="fas fa-users me-2" aria-hidden="true"></i>Our Community</span>
+      <h2 id="members-heading" class="section-title" style="margin:0.75rem auto 0;max-width:400px;">Member Spotlights</h2>
+      <p class="section-lead" style="margin:1.25rem auto 0;">Real stories from the KUHIN community.</p>
+    </div>
+    <div class="row g-4 mt-2">
+      {% for member in testimonial_members|slice:":3" %}
+        <div class="col-lg-4 col-md-6 reveal reveal-delay-{{ forloop.counter }}">
+          <div class="ku-card h-100 p-0">
+            <div class="member-card">
+              <div class="member-img-wrap">
+                {% if member.photo %}
+                  <img src="{{ member.photo.url }}" alt="{{ member.name }}" loading="lazy">
+                {% else %}
+                  <div style="width:100%;height:100%;background:var(--grad-card);display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-user fa-4x" style="color:var(--ku-gray-300);" aria-hidden="true"></i>
+                  </div>
+                {% endif %}
+                <div class="member-overlay" aria-hidden="true">
+                  <div class="member-socials">
+                    {% if member.email %}<a href="mailto:{{ member.email }}" class="social-btn" aria-label="Email {{ member.name }}"><i class="fas fa-envelope"></i></a>{% endif %}
+                    {% if member.linkedin %}<a href="{{ member.linkedin }}" target="_blank" rel="noopener" class="social-btn" aria-label="{{ member.name }} on LinkedIn"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+                    {% if member.github %}<a href="{{ member.github }}" target="_blank" rel="noopener" class="social-btn" aria-label="{{ member.name }} on GitHub"><i class="fab fa-github"></i></a>{% endif %}
+                  </div>
+                  <a href="{% url 'home:member_detail' member.pk %}" class="btn-ku btn-gold-ku" style="font-size:0.8rem;padding:0.5rem 1.2rem;text-decoration:none;" aria-label="View {{ member.name }}'s profile">View Profile</a>
+                </div>
+              </div>
+              <div class="member-body">
+                <h4 class="member-name">{{ member.name }}</h4>
+                <p class="member-position">{{ member.position }}</p>
+                <div class="member-tags">
+                  <span class="member-tag ku-tag ku-tag-blue">{{ member.batch }}</span>
+                  {% if member.specialization %}
+                    <span class="member-tag ku-tag ku-tag-gray">{{ member.specialization }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-5 reveal">
+      <a href="{% url 'home:team' %}" class="btn-ku btn-primary-ku" style="text-decoration:none;">
+        Meet the Full Team <i class="fas fa-users ms-2" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══════════════ CTA BANNER ═══════════════ -->
+<section class="section-white section-pad">
+  <div class="container">
+    <div class="cta-banner text-center reveal">
+      <span class="hero-label" style="margin-bottom:1.5rem;">
+        <i class="fas fa-rocket me-2" aria-hidden="true"></i> Ready to Begin?
+      </span>
+      <h2 style="color:#fff;font-size:clamp(2rem,4vw,3rem);font-weight:800;margin:0 auto 1.25rem;max-width:560px;">
+        Transform Healthcare with Us
+      </h2>
+      <p style="color:rgba(255,255,255,0.7);font-size:1.05rem;max-width:520px;margin:0 auto 2.5rem;line-height:1.7;">
+        Join KUHIN and start your journey in health informatics. Learn, build, and make a real difference in Nepal's healthcare system.
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="{% url 'home:contact' %}" class="btn-ku btn-gold-ku" style="text-decoration:none;font-size:1rem;padding:1rem 2.5rem;">
+          <i class="fas fa-user-plus me-2" aria-hidden="true"></i> Join Now
+        </a>
+        <a href="{% url 'home:about' %}" class="btn-ku btn-outline-ku" style="text-decoration:none;font-size:1rem;padding:1rem 2.5rem;">
+          Learn More
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

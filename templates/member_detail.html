@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ member.name }} — KUHIN Team{% endblock %}
+{% block meta_description %}{{ member.name }}, {{ member.position }} at KUHIN. {{ member.bio|striptags|truncatewords:25 }}{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="member-name">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <!-- Back link -->
+    <a href="{% url 'home:team' %}" style="display:inline-flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.65);font-size:0.85rem;text-decoration:none;margin-bottom:2rem;transition:color 0.2s;" onmouseover="this.style.color='var(--ku-gold)'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+      <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Team
+    </a>
+    <div class="row align-items-center gy-4">
+      <!-- Avatar -->
+      <div class="col-lg-3 col-md-4">
+        <div style="width:200px;height:200px;border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.35);border:3px solid rgba(255,255,255,0.15);">
+          {% if member.photo %}
+            <img src="{{ member.photo.url }}" alt="{{ member.name }}" style="width:100%;height:100%;object-fit:cover;" loading="eager">
+          {% else %}
+            <div style="width:100%;height:100%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;">
+              <i class="fas fa-user fa-5x" style="color:rgba(255,255,255,0.3);" aria-hidden="true"></i>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- Info -->
+      <div class="col-lg-9 col-md-8">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="ku-tag" style="background:rgba(200,151,58,0.2);color:#E8C76A;">{{ member.team }}</span>
+          <span class="ku-tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);">Batch {{ member.batch }}</span>
+          {% if member.is_active %}
+            <span class="ku-tag" style="background:rgba(14,143,122,0.2);color:#4ECDC4;"><i class="fas fa-circle" style="font-size:0.4rem;vertical-align:middle;margin-right:4px;"></i>Active</span>
+          {% endif %}
+        </div>
+        <h1 id="member-name" class="hero-headline" style="font-size:clamp(2rem,5vw,3.5rem);">{{ member.name }}</h1>
+        <h2 style="font-size:1.2rem;font-weight:500;color:rgba(255,255,255,0.7);margin-top:0.5rem;font-family:var(--font-body);">{{ member.position }}</h2>
+        {% if member.specialization %}
+          <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-top:0.5rem;">{{ member.specialization }}</p>
+        {% endif %}
+        <!-- Social links -->
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          {% if member.email %}
+            <a href="mailto:{{ member.email }}" class="btn-ku btn-outline-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">
+              <i class="fas fa-envelope me-1" aria-hidden="true"></i> Email
+            </a>
+          {% endif %}
+          {% if member.linkedin %}
+            <a href="{{ member.linkedin }}" target="_blank" rel="noopener" class="btn-ku btn-outline-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">
+              <i class="fab fa-linkedin-in me-1" aria-hidden="true"></i> LinkedIn
+            </a>
+          {% endif %}
+          {% if member.github %}
+            <a href="{{ member.github }}" target="_blank" rel="noopener" class="btn-ku btn-outline-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">
+              <i class="fab fa-github me-1" aria-hidden="true"></i> GitHub
+            </a>
+          {% endif %}
+          {% if member.website %}
+            <a href="{{ member.website }}" target="_blank" rel="noopener" class="btn-ku btn-outline-ku" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">
+              <i class="fas fa-globe me-1" aria-hidden="true"></i> Website
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8 reveal">
+
+        <!-- Bio -->
+        <div class="ku-card p-5 mb-4" style="border-top:3px solid var(--color-primary);">
+          <h3 style="font-size:1.1rem;margin-bottom:1.25rem;"><i class="fas fa-user me-2" style="color:var(--color-primary);" aria-hidden="true"></i>Biography</h3>
+          <div class="rich-content" style="color:var(--ku-gray-700);line-height:1.8;font-size:0.95rem;">
+            {{ member.bio|safe }}
+          </div>
+        </div>
+
+        <!-- Achievements -->
+        {% if member.achievements %}
+          <div class="ku-card p-5">
+            <h3 style="font-size:1.1rem;margin-bottom:1.25rem;"><i class="fas fa-trophy me-2" style="color:var(--ku-gold);" aria-hidden="true"></i>Achievements</h3>
+            <div class="rich-content" style="color:var(--ku-gray-700);line-height:1.8;font-size:0.92rem;">
+              {{ member.achievements|safe }}
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="col-lg-4 reveal reveal-delay-1">
+        <!-- Profile card -->
+        <div class="ku-card p-5 mb-4">
+          <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-muted);margin-bottom:1.25rem;">Profile Details</h3>
+          <dl>
+            <div style="display:flex;flex-direction:column;margin-bottom:1rem;">
+              <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Position</dt>
+              <dd style="margin:0;font-size:0.92rem;font-weight:600;color:var(--ku-gray-800);">{{ member.position }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;margin-bottom:1rem;">
+              <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Team</dt>
+              <dd style="margin:0;font-size:0.92rem;color:var(--ku-gray-700);">{{ member.team }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;margin-bottom:1rem;">
+              <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Batch</dt>
+              <dd style="margin:0;font-size:0.92rem;color:var(--ku-gray-700);">{{ member.batch }}</dd>
+            </div>
+            {% if member.role_in_project %}
+              <div style="display:flex;flex-direction:column;margin-bottom:1rem;">
+                <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Project Role</dt>
+                <dd style="margin:0;font-size:0.92rem;color:var(--ku-gray-700);">{{ member.role_in_project }}</dd>
+              </div>
+            {% endif %}
+            {% if member.join_date %}
+              <div style="display:flex;flex-direction:column;">
+                <dt style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-muted);margin-bottom:0.25rem;">Member Since</dt>
+                <dd style="margin:0;font-size:0.92rem;color:var(--ku-gray-700);">{{ member.join_date|date:"F Y" }}</dd>
+              </div>
+            {% endif %}
+          </dl>
+        </div>
+
+        <a href="{% url 'home:team' %}" class="btn-ku btn-outline-dark-ku" style="width:100%;justify-content:center;text-decoration:none;">
+          <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Back to Team
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rich-content p{margin-bottom:1rem;}
+  .rich-content ul,.rich-content ol{padding-left:1.5rem;margin-bottom:1rem;}
+  .rich-content li{margin-bottom:0.4rem;line-height:1.7;}
+</style>
+{% endblock %}

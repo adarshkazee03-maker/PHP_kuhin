@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gallery — KUHIN{% endblock %}
+{% block meta_description %}Moments from KUHIN events, workshops, team gatherings, and activities at Kathmandu University.{% endblock %}
+
+{% block extra_css %}
+<style>
+  .gallery-grid { columns: 3; column-gap: 1rem; }
+  .gallery-item { break-inside:avoid; margin-bottom:1rem; border-radius:var(--radius-md); overflow:hidden; position:relative; cursor:pointer; display:block; }
+  .gallery-item img { width:100%; display:block; transition:transform 0.4s ease; }
+  .gallery-item:hover img { transform:scale(1.04); }
+  .gallery-item .gcap { position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(11,31,69,0.85),transparent);color:#fff;padding:0.9rem 1rem 0.75rem;opacity:0;transition:opacity 0.25s;font-size:0.82rem; }
+  .gallery-item:hover .gcap, .gallery-item:focus .gcap { opacity:1; }
+  #lightbox { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:2000;align-items:center;justify-content:center;padding:1.5rem; }
+  #lightbox.open { display:flex; }
+  #lb-img { max-width:90vw;max-height:85vh;object-fit:contain;border-radius:var(--radius-md);box-shadow:0 24px 80px rgba(0,0,0,0.6); }
+  #lb-close { position:absolute;top:1.25rem;right:1.25rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:background 0.2s;line-height:1; }
+  #lb-close:hover { background:rgba(255,255,255,0.2); }
+  #lb-caption { position:absolute;bottom:1.25rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);font-size:0.88rem;text-align:center;max-width:70vw; }
+  @media(max-width:768px) { .gallery-grid { columns:2; } }
+  @media(max-width:480px) { .gallery-grid { columns:1; } }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="gallery-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <span class="hero-label"><i class="fas fa-images me-2"></i>Visual Archive</span>
+        <h1 id="gallery-heading" class="hero-headline mt-3">Gallery</h1>
+        <p class="hero-subtitle mt-4">
+          Moments captured from KUHIN events, workshops, team gatherings, and community milestones.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content">
+  <div class="container">
+
+    <!-- Category filter -->
+    {% if categories %}
+      <div class="d-flex flex-wrap gap-2 mb-5 reveal" role="navigation" aria-label="Filter gallery by category">
+        <a href="{% url 'home:gallery' %}" class="btn-ku {% if not selected_category %}btn-primary-ku{% else %}btn-outline-dark-ku{% endif %}" style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">All</a>
+        {% for cat in categories %}
+          <a href="{% url 'home:gallery' %}?category={{ cat.slug }}"
+             class="btn-ku {% if selected_category == cat.slug %}btn-primary-ku{% else %}btn-outline-dark-ku{% endif %}"
+             style="font-size:0.82rem;padding:0.45rem 1.1rem;text-decoration:none;">{{ cat.name }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if images %}
+      <div class="gallery-grid reveal" id="galleryGrid" role="list">
+        {% for image in images %}
+          <div class="gallery-item" role="listitem"
+               tabindex="0"
+               data-src="{% if image.image %}{{ image.image.url }}{% endif %}"
+               data-title="{{ image.title }}"
+               onclick="kuhinLightbox.open(this)"
+               onkeydown="if(event.key==='Enter'||event.key===' ')kuhinLightbox.open(this)"
+               aria-label="View photo: {{ image.title }}">
+            {% if image.image %}
+              {% if image.image %}<img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy">{% endif %}
+            {% else %}
+              <div style="height:200px;background:var(--grad-card);display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-image fa-3x" style="color:var(--ku-gray-300);" aria-hidden="true"></i>
+              </div>
+            {% endif %}
+            <div class="gcap" aria-hidden="true">
+              <strong>{{ image.title }}</strong>
+              {% if image.event_date %}<br><span style="opacity:0.75;font-size:0.75rem;">{{ image.event_date|date:"M Y" }}</span>{% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state reveal">
+        <div class="empty-icon"><i class="fas fa-camera" aria-hidden="true"></i></div>
+        <h5>Gallery Coming Soon</h5>
+        <p>Photos from our events and activities will appear here soon.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button id="lb-close" onclick="kuhinLightbox.close()" aria-label="Close photo viewer">
+    <i class="fas fa-times" aria-hidden="true"></i>
+  </button>
+  <img id="lb-img" src="" alt="">
+  <p id="lb-caption"></p>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const kuhinLightbox = {
+  open(el) {
+    const src = el.dataset.src;
+    if (!src) return;
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lb-img').src = src;
+    document.getElementById('lb-img').alt = el.dataset.title;
+    document.getElementById('lb-caption').textContent = el.dataset.title;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lb-close').focus();
+  },
+  close() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('open');
+    document.getElementById('lb-img').src = '';
+    document.body.style.overflow = '';
+  }
+};
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) kuhinLightbox.close();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') kuhinLightbox.close();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Programs & Activities — KUHIN{% endblock %}
+{% block meta_description %}Explore KUHIN's programs: workshops, career development, publications, research initiatives, and student engagement activities at Kathmandu University.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero has-photo" aria-labelledby="programs-heading">
+  <div class="page-hero-bg">
+    <img src="{% static 'images/campus-aerial.png' %}" alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <span class="hero-label"><i class="fas fa-layer-group me-2"></i>Programs</span>
+        <h1 id="programs-heading" class="hero-headline mt-3">Our Programs & Activities</h1>
+        <p class="hero-subtitle mt-4">
+          A comprehensive suite of programs designed to develop academic excellence, professional skills, and industry readiness in health informatics.
+        </p>
+        <a href="{% url 'home:contact' %}" class="btn-ku btn-gold-ku mt-5" style="text-decoration:none;">
+          <i class="fas fa-user-plus me-2"></i> Join a Program
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" id="main-content" aria-labelledby="annual-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag"><i class="fas fa-calendar-check me-2"></i>Annual</span>
+      <h2 id="annual-heading" class="section-title" style="margin-top:0.75rem;">Annual Programs</h2>
+      <p class="section-lead" style="margin-top:1rem;">Recurring programs that structure the academic year and build community.</p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      {% for prog in annual_programs|default:"" %}
+        <div class="col-lg-6 reveal"><div class="program-card h-100">...</div></div>
+      {% empty %}
+        <div class="col-lg-6 reveal reveal-delay-1">
+          <div class="program-card h-100">
+            <h4 style="margin-bottom:0.75rem;">Welcome & Farewell Program</h4>
+            <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;">A structured annual event welcoming new students and bidding farewell to graduating seniors. Includes networking, entertainment, and recognition of achievements.</p>
+            <span class="program-freq" style="color:var(--color-primary);">2× per year</span>
+          </div>
+        </div>
+        <div class="col-lg-6 reveal reveal-delay-2">
+          <div class="program-card h-100">
+            <h4 style="margin-bottom:0.75rem;">Internship Orientation Program</h4>
+            <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;">Collaboration with hospitals, NGOs, and health-tech companies. Provides internship preparation, connects students with opportunities, and facilitates placements.</p>
+            <span class="program-freq" style="color:var(--ku-teal);">Before internship season</span>
+          </div>
+        </div>
+        <div class="col-lg-6 reveal reveal-delay-1">
+          <div class="program-card h-100">
+            <h4 style="margin-bottom:0.75rem;">Career Counselling & Development</h4>
+            <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;">Regular workshops covering CV building, LinkedIn profiles, interview preparation, certifications, and career guidance from professionals working in health informatics.</p>
+            <span class="program-freq" style="color:var(--ku-gold);">Monthly / Quarterly</span>
+          </div>
+        </div>
+        <div class="col-lg-6 reveal reveal-delay-2">
+          <div class="program-card h-100">
+            <h4 style="margin-bottom:0.75rem;">Publications Unit</h4>
+            <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;">Annual magazine and semi-annual wall magazine. Showcases student work, research highlights, club achievements, and health informatics insights from our community.</p>
+            <span class="program-freq" style="color:#8B5CF6;">Annually & Semi-annually</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section-light section-pad" aria-labelledby="ongoing-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag"><i class="fas fa-sync-alt me-2"></i>Ongoing</span>
+      <h2 id="ongoing-heading" class="section-title" style="margin-top:0.75rem;">Ongoing Initiatives</h2>
+      <p class="section-lead" style="margin-top:1rem;">Year-round programs running continuously throughout the academic calendar.</p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      <div class="col-lg-4 col-md-6 reveal reveal-delay-1">
+        <div class="feature-card h-100" style="border-top-color:var(--ku-teal);">
+          <div class="feature-icon" style="background:rgba(14,143,122,0.08);color:var(--ku-teal);"><i class="fas fa-flask" aria-hidden="true"></i></div>
+          <h4>Research & Innovation Lab</h4>
+          <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;margin-top:0.75rem;">Student-led research projects in clinical data science, EHR systems, and public health informatics with faculty mentorship and publication support.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 reveal reveal-delay-2">
+        <div class="feature-card h-100" style="border-top-color:var(--ku-gold);">
+          <div class="feature-icon" style="background:rgba(200,151,58,0.08);color:var(--ku-gold);"><i class="fas fa-chalkboard-teacher" aria-hidden="true"></i></div>
+          <h4>Peer Tutoring Network</h4>
+          <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;margin-top:0.75rem;">Senior students mentor juniors in core subjects: biostatistics, health data management, Python programming, and healthcare standards like FHIR and HL7.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 reveal reveal-delay-3">
+        <div class="feature-card h-100" style="border-top-color:var(--color-primary);">
+          <div class="feature-icon"><i class="fas fa-hospital" aria-hidden="true"></i></div>
+          <h4>Hospital Partnership Programme</h4>
+          <p style="color:var(--color-muted);font-size:0.92rem;line-height:1.7;margin-top:0.75rem;">Direct partnerships with hospitals and health organizations for site visits, case studies, data access for research projects, and real-world learning opportunities.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white section-pad" aria-labelledby="skills-heading">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <span class="section-tag"><i class="fas fa-code me-2"></i>Skills</span>
+      <h2 id="skills-heading" class="section-title" style="margin:0.75rem auto 0;max-width:500px;">Skills You'll Develop</h2>
+      <p class="section-lead" style="margin:1.25rem auto 0;">Gain expertise across the full health informatics stack.</p>
+    </div>
+    <div class="row g-4 mt-2">
+      <div class="col-lg-3 col-md-6 reveal reveal-delay-1">
+        <div class="ku-card p-5 h-100" style="border-top:3px solid var(--color-primary);">
+          <div style="font-size:1.8rem;color:var(--color-primary);margin-bottom:1rem;" aria-hidden="true"><i class="fas fa-chart-line"></i></div>
+          <h4 style="font-size:1rem;">Data Science & Analytics</h4>
+          <ul style="list-style:none;padding:0;margin:0.75rem 0 0;display:flex;flex-direction:column;gap:0.4rem;">
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Python & R Programming</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· SQL & Data Querying</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Data Visualization</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Statistical Analysis</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 reveal reveal-delay-2">
+        <div class="ku-card p-5 h-100" style="border-top:3px solid var(--ku-teal);">
+          <div style="font-size:1.8rem;color:var(--ku-teal);margin-bottom:1rem;" aria-hidden="true"><i class="fas fa-brain"></i></div>
+          <h4 style="font-size:1rem;">Machine Learning in Health</h4>
+          <ul style="list-style:none;padding:0;margin:0.75rem 0 0;display:flex;flex-direction:column;gap:0.4rem;">
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Clinical ML Models</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· NLP for Medical Text</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Model Evaluation</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Responsible AI</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 reveal reveal-delay-3">
+        <div class="ku-card p-5 h-100" style="border-top:3px solid var(--ku-gold);">
+          <div style="font-size:1.8rem;color:var(--ku-gold);margin-bottom:1rem;" aria-hidden="true"><i class="fas fa-hospital-user"></i></div>
+          <h4 style="font-size:1rem;">Healthcare Domain</h4>
+          <ul style="list-style:none;padding:0;margin:0.75rem 0 0;display:flex;flex-direction:column;gap:0.4rem;">
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Medical Terminology</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· EHR Systems & FHIR</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Clinical Workflows</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Health Data Standards</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 reveal reveal-delay-4">
+        <div class="ku-card p-5 h-100" style="border-top:3px solid #8B5CF6;">
+          <div style="font-size:1.8rem;color:#8B5CF6;margin-bottom:1rem;" aria-hidden="true"><i class="fas fa-code"></i></div>
+          <h4 style="font-size:1rem;">Software Development</h4>
+          <ul style="list-style:none;padding:0;margin:0.75rem 0 0;display:flex;flex-direction:column;gap:0.4rem;">
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Web & API Development</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· Cloud Platforms</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· DevOps & Docker</li>
+            <li style="font-size:0.84rem;color:var(--color-muted);">· System Design</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-light section-pad-sm">
+  <div class="container text-center reveal">
+    <h3 style="margin-bottom:1rem;">Ready to join a program?</h3>
+    <p style="color:var(--color-muted);max-width:440px;margin:0 auto 2rem;">Contact us to learn more about membership, program schedules, and how to get involved.</p>
+    <a href="{% url 'home:contact' %}" class="btn-ku btn-primary-ku" style="text-decoration:none;">Get in Touch</a>
+  </div>
+</section>
+
+{% endblock %}

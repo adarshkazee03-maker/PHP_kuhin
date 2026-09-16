@@ -1,0 +1,50 @@
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+.venv/
+ENV/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+.project
+.pydevproject
+.settings/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+.env
+.env.local
+
+# Django specific
+*.log
+*.pot
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Package files
+*.egg-info/
+dist/
+build/
+
+# Editor backup files
+*.bak
+*.tmp

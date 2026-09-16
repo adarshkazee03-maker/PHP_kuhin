@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B1F45">
+  <link rel="icon" type="image/png" href="{% static 'images/Kuhin_logo.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'images/Kuhin_logo.png' %}">
+  <meta name="description" content="{% block meta_description %}KUHIN — Kathmandu University Health Informatics Network. Bridging Data & Life through innovation in healthcare technology.{% endblock %}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{% block canonical_url %}https://kuhin.ku.edu.np/{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}KUHIN — Health Informatics Club{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Empowering Nepal's next generation of health technology innovators.{% endblock %}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{% block og_url %}https://kuhin.ku.edu.np{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}{% static 'images/Kuhin_logo.png' %}{% endblock %}">
+  <meta property="og:site_name" content="KUHIN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}KUHIN — Health Informatics Club{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}Nepal's leading health informatics student community.{% endblock %}">
+  <title>{% block title %}KUHIN — Kathmandu University Health Informatics Network{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/kuhin-design-system.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body data-page="{% block body_page %}{% endblock %}">
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- NAVIGATION -->
+<nav id="mainNav" role="navigation" aria-label="Main navigation">
+  <div class="navbar-inner">
+    <a href="/" class="nav-brand" aria-label="KUHIN home">
+      <img src="{% static 'images/Kuhin_logo.png' %}" alt="" aria-hidden="true" class="nav-brand-logo" loading="eager" width="50" height="50">
+      <div class="nav-brand-text">
+        <span class="brand-main">KUHIN</span>
+        <span class="brand-sub">Health Informatics</span>
+      </div>
+    </a>
+    <ul class="nav-links" role="list">
+      <li class="nav-item" role="listitem">
+        <a href="/" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Home</a>
+      </li>
+      <li class="nav-item nav-dropdown" role="listitem">
+        <button class="nav-link" aria-haspopup="true" aria-expanded="false">About <i class="fas fa-chevron-down ms-1" style="font-size:0.65rem;opacity:0.7;"></i></button>
+        <ul class="nav-dropdown-menu" role="list">
+          <li role="listitem"><a href="{% url 'home:about' %}">About KUHIN</a></li>
+          <li role="listitem"><a href="{% url 'home:programs' %}">Programs</a></li>
+          <li role="listitem"><a href="{% url 'home:team' %}">Our Team</a></li>
+        </ul>
+      </li>
+      <li class="nav-item" role="listitem">
+        <a href="{% url 'home:events' %}" class="nav-link {% if request.resolver_match.url_name == 'events' %}active{% endif %}">Events</a>
+      </li>
+      <li class="nav-item" role="listitem">
+        <a href="{% url 'blog:blog_list' %}" class="nav-link">Blog</a>
+      </li>
+      <li class="nav-item" role="listitem">
+        <a href="{% url 'home:resources' %}" class="nav-link {% if request.resolver_match.url_name == 'resources' %}active{% endif %}">Resources</a>
+      </li>
+      <li class="nav-item" role="listitem">
+        <a href="{% url 'home:gallery' %}" class="nav-link {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}">Gallery</a>
+      </li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1rem;flex-shrink:0;">
+      <a href="{% url 'home:contact' %}" class="btn-ku nav-cta" id="navCtaDesktop" style="display:none;text-decoration:none;">
+        <i class="fas fa-envelope me-1"></i> Contact
+      </a>
+      <button class="nav-toggler" id="navToggler" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav Panel -->
+<nav class="nav-mobile-panel" id="mobileNav" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
+  <button id="mobileNavClose" aria-label="Close menu" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(255,255,255,0.7);font-size:1.5rem;cursor:pointer;z-index:10;">
+    <i class="fas fa-times"></i>
+  </button>
+  <div class="nav-brand" style="margin-bottom:2.5rem;">
+    <img src="{% static 'images/Kuhin_logo.png' %}" alt="" aria-hidden="true" class="nav-brand-logo" width="50" height="50">
+    <div class="nav-brand-text"><span class="brand-main">KUHIN</span><span class="brand-sub">Health Informatics</span></div>
+  </div>
+  <ul class="nav-mobile-links" role="list">
+    <li><a href="/">Home</a></li>
+    <li><a href="{% url 'home:about' %}">About KUHIN</a></li>
+    <li><a href="{% url 'home:programs' %}">Programs</a></li>
+    <li><a href="{% url 'home:team' %}">Our Team</a></li>
+    <li><a href="{% url 'home:events' %}">Events</a></li>
+    <li><a href="{% url 'blog:blog_list' %}">Blog</a></li>
+    <li><a href="{% url 'home:resources' %}">Resources</a></li>
+    <li><a href="{% url 'home:gallery' %}">Gallery</a></li>
+  </ul>
+  <div style="margin-top:2rem;">
+    <a href="{% url 'home:contact' %}" class="btn-ku btn-gold-ku" style="width:100%;justify-content:center;display:flex;text-decoration:none;">
+      <i class="fas fa-envelope me-2"></i> Contact Us
+    </a>
+  </div>
+</nav>
+
+{% block breadcrumb %}{% endblock %}
+
+<main id="main-content" role="main" tabindex="-1">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-pulse"></div>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <div class="nav-brand mb-4" style="display:inline-flex;">
+          <img src="{% static 'images/Kuhin_logo.png' %}" alt="KUHIN logo" class="nav-brand-logo" width="40" height="40">
+          <div class="nav-brand-text"><span class="brand-main">KUHIN</span><span class="brand-sub">Health Informatics</span></div>
+        </div>
+        <p class="footer-brand-desc">Empowering the next generation of healthcare technology leaders through data science, collaboration, and innovation at Kathmandu University.</p>
+        <nav class="footer-social-links" aria-label="Social media">
+          <a href="https://www.facebook.com/kuhin.ku" class="footer-social-btn" target="_blank" rel="noreferrer noopener" aria-label="KUHIN on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="https://www.linkedin.com/company/kuhin" class="footer-social-btn" target="_blank" rel="noreferrer noopener" aria-label="KUHIN on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+          <a href="https://github.com/kuhin" class="footer-social-btn" target="_blank" rel="noreferrer noopener" aria-label="KUHIN on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/kuhin.ku" class="footer-social-btn" target="_blank" rel="noreferrer noopener" aria-label="KUHIN on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+        </nav>
+      </div>
+      <div class="col-lg-2 col-6">
+        <p class="footer-nav-label">Explore</p>
+        <ul class="footer-nav-list">
+          <li><a href="{% url 'home:about' %}"><i class="fas fa-arrow-right fa-xs"></i> About</a></li>
+          <li><a href="{% url 'home:programs' %}"><i class="fas fa-arrow-right fa-xs"></i> Programs</a></li>
+          <li><a href="{% url 'home:team' %}"><i class="fas fa-arrow-right fa-xs"></i> Team</a></li>
+          <li><a href="{% url 'home:events' %}"><i class="fas fa-arrow-right fa-xs"></i> Events</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-6">
+        <p class="footer-nav-label">Resources</p>
+        <ul class="footer-nav-list">
+          <li><a href="{% url 'blog:blog_list' %}"><i class="fas fa-arrow-right fa-xs"></i> Blog</a></li>
+          <li><a href="{% url 'home:resources' %}"><i class="fas fa-arrow-right fa-xs"></i> Resources</a></li>
+          <li><a href="{% url 'home:gallery' %}"><i class="fas fa-arrow-right fa-xs"></i> Gallery</a></li>
+          <li><a href="{% url 'newsletter:news_list' %}"><i class="fas fa-arrow-right fa-xs"></i> Newsletter</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <p class="footer-nav-label">Get in Touch</p>
+        <address style="font-style:normal;">
+          <p style="font-size:0.88rem;color:rgba(255,255,255,0.55);margin-bottom:0.75rem;"><i class="fas fa-map-marker-alt me-2" style="color:var(--ku-gold);width:16px;"></i>Kathmandu University, Dhulikhel, Kavre, Nepal</p>
+          <p style="font-size:0.88rem;color:rgba(255,255,255,0.55);margin-bottom:1.5rem;"><i class="fas fa-envelope me-2" style="color:var(--ku-gold);width:16px;"></i><a href="mailto:kuhin@ku.edu.np" style="color:rgba(255,255,255,0.65);">kuhin@ku.edu.np</a></p>
+        </address>
+        <p style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);margin-bottom:0.75rem;">Newsletter</p>
+        <form method="post" action="{% url 'newsletter:subscribe' %}" class="d-flex gap-2" aria-label="Newsletter signup">
+          {% csrf_token %}
+          <input type="email" name="email" placeholder="your@email.com" required aria-label="Email for newsletter"
+                 style="flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-full);padding:0.55rem 1rem;font-size:0.85rem;color:#fff;outline:none;min-width:0;font-family:var(--font-body);">
+          <button type="submit" class="btn-ku btn-gold-ku" style="padding:0.55rem 1.1rem;font-size:0.82rem;flex-shrink:0;">Members</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="row align-items-center">
+        <div class="col-md-6"><p>&copy; {% now "Y" %} Kathmandu University Health Informatics Network.</p></div>
+        <div class="col-md-6 text-md-end"><p><a href="{% url 'home:contact' %}" style="color:rgba(255,255,255,0.4);">Contact</a> &nbsp;·&nbsp; <a href="{% url 'home:about' %}" style="color:rgba(255,255,255,0.4);">About</a></p></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Scroll back to top">
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function(){
+  'use strict';
+  const nav=document.getElementById('mainNav');
+  const navCta=document.getElementById('navCtaDesktop');
+  const isHome=document.body.dataset.page==='home';
+  function handleScroll(){
+    if(window.scrollY>60){
+      nav.classList.add('scrolled');
+      if(navCta)navCta.style.display='inline-flex';
+    } else {
+      nav.classList.remove('scrolled');
+      if(navCta&&isHome)navCta.style.display='none';
+    }
+  }
+  if(!isHome&&navCta)navCta.style.display='inline-flex';
+  window.addEventListener('scroll',handleScroll,{passive:true});
+  handleScroll();
+
+  const toggler=document.getElementById('navToggler');
+  const mobileNav=document.getElementById('mobileNav');
+  const closeBtn=document.getElementById('mobileNavClose');
+  function openNav(){toggler.classList.add('open');toggler.setAttribute('aria-expanded','true');mobileNav.classList.add('open');mobileNav.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function closeNav(){toggler.classList.remove('open');toggler.setAttribute('aria-expanded','false');mobileNav.classList.remove('open');mobileNav.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  if(toggler)toggler.addEventListener('click',()=>mobileNav.classList.contains('open')?closeNav():openNav());
+  if(closeBtn)closeBtn.addEventListener('click',closeNav);
+  document.addEventListener('keydown',(e)=>{if(e.key==='Escape')closeNav();});
+
+  const reveals=document.querySelectorAll('.reveal');
+  if(reveals.length){
+    const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+    reveals.forEach(el=>obs.observe(el));
+  }
+
+  const counters=document.querySelectorAll('[data-count]');
+  if(counters.length){
+    const cObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting&&!e.target.dataset.counted){e.target.dataset.counted=true;animateCount(e.target);cObs.unobserve(e.target);}});},{threshold:0.5});
+    counters.forEach(el=>cObs.observe(el));
+    function animateCount(el){const t=parseInt(el.dataset.count,10);const d=1400;const s=performance.now();function u(n){const p=Math.min((n-s)/d,1);const e2=1-Math.pow(1-p,3);el.textContent=Math.round(t*e2);if(p<1)requestAnimationFrame(u);else el.textContent=t;}requestAnimationFrame(u);}
+  }
+
+  const btt=document.getElementById('backToTop');
+  if(btt){window.addEventListener('scroll',()=>btt.classList.toggle('visible',window.scrollY>400),{passive:true});btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));}
+})();
+</script>
+<script src="{% static 'js/kuhin.js' %}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
